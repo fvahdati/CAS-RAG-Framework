@@ -1,0 +1,33 @@
+{
+  "video_number": 3,
+  "slug": "video_03_mental_health_suicide_bridge",
+  "display_name": "Mental Health \u2014 Bridge Distress Experiment",
+  "youtube_video_id": "Gwo_O0SFwak",
+  "topic_theme": "Teenage depression / mental-health-related adolescent themes",
+  "evaluation_label": "Suicide",
+  "dataset_source_file": "comments_Suicide",
+  "comments_per_dataset": 100,
+  "scenario_short": "A staged social experiment shows how strangers react when a distressed young man appears to be attempting suicide on a bridge.",
+  "scenario_full": "This social experiment presents a staged scenario in which a young man appears emotionally distressed and attempts to jump off a bridge. Hidden cameras capture how bystanders react in real time. Several strangers intervene, showing empathy and urgency\u2014some physically stop him, while others offer emotional support, reassurance, and companionship. They encourage him to talk, remind him of his value, and try to de-escalate the situation. The experiment highlights the importance of human compassion and the role of bystanders in preventing tragedy, emphasizing themes of depression, loneliness, and human connection.",
+  "paths": {
+    "scenario_full": "video_03_mental_health_suicide_bridge/scenario_full.txt",
+    "scenario_short": "video_03_mental_health_suicide_bridge/scenario_short.txt",
+    "prototypes": "video_03_mental_health_suicide_bridge/prototypes_semantic.json",
+    "prompts_dir": "video_03_mental_health_suicide_bridge/prompts/",
+    "script_corpus": "video_03_mental_health_suicide_bridge/script_corpus.txt"
+  },
+  "cas_rag_layer1_categories": [
+    "Explicit",
+    "Vague",
+    "Context-Dependent"
+  ],
+  "emotion_labels": [
+    "Shock",
+    "Disbelief",
+    "Anger",
+    "Frustration",
+    "Empathy",
+    "None"
+  ],
+  "human_verification": "required"
+}

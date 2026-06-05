@@ -1,0 +1,33 @@
+{
+  "video_number": 1,
+  "slug": "video_01_bullying_bystander_bus_stop",
+  "display_name": "Bullying Bystander \u2014 Bus Stop",
+  "youtube_video_id": "Vo7kl9RsWBo",
+  "topic_theme": "Teenagers bullying prevention",
+  "evaluation_label": "Bullying",
+  "dataset_source_file": "comments_bullying",
+  "comments_per_dataset": 100,
+  "scenario_short": "A social experiment shows how bystanders respond when a teenage girl is verbally bullied in public.",
+  "scenario_full": "This staged social experiment takes place at a public bus stop where a teenage girl is sitting alone reading a book. Two individuals begin verbally bullying her, mocking her appearance, personality, and social life. The girl becomes visibly uncomfortable but does not respond. Initially, bystanders watch without intervening, but as the situation escalates, several people step in\u2014some confront the bullies directly, while others support the victim by offering comfort and inclusion. The experiment highlights different types of bystander behavior and emphasizes the importance of standing up against bullying and supporting vulnerable individuals.",
+  "paths": {
+    "scenario_full": "video_01_bullying_bystander_bus_stop/scenario_full.txt",
+    "scenario_short": "video_01_bullying_bystander_bus_stop/scenario_short.txt",
+    "prototypes": "video_01_bullying_bystander_bus_stop/prototypes_semantic.json",
+    "prompts_dir": "video_01_bullying_bystander_bus_stop/prompts/",
+    "script_corpus": "video_01_bullying_bystander_bus_stop/script_corpus.txt"
+  },
+  "cas_rag_layer1_categories": [
+    "Explicit",
+    "Vague",
+    "Context-Dependent"
+  ],
+  "emotion_labels": [
+    "Shock",
+    "Disbelief",
+    "Anger",
+    "Frustration",
+    "Empathy",
+    "None"
+  ],
+  "human_verification": "required"
+}

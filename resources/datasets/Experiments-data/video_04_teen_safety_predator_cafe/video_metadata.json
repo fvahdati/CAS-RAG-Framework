@@ -1,0 +1,33 @@
+{
+  "video_number": 4,
+  "slug": "video_04_teen_safety_predator_cafe",
+  "display_name": "Teen Safety \u2014 Predator Luring (Caf\u00e9)",
+  "youtube_video_id": "YdqRLuYkYDk",
+  "topic_theme": "Teen-safety / adolescent mental-health awareness",
+  "evaluation_label": "TeenSafety",
+  "dataset_source_file": "comments-TeenSafety",
+  "comments_per_dataset": 100,
+  "scenario_short": "Bystanders react when a teenage girl is lured by an older man into a potentially dangerous situation.",
+  "scenario_full": "This social experiment shows a 15-year-old girl being approached by an older man who attempts to lure her into a private setting under the promise of helping her music career. The interaction unfolds in a public caf\u00e9, where hidden cameras record how bystanders react. Some people intervene, warning the girl and confronting the man, while others hesitate. The situation explores teenage vulnerability, manipulation tactics, and the importance of awareness and intervention. It highlights how emotional naivety, trust, and social pressure can place teenagers in risky situations, linking closely to mental and emotional well-being.",
+  "paths": {
+    "scenario_full": "video_04_teen_safety_predator_cafe/scenario_full.txt",
+    "scenario_short": "video_04_teen_safety_predator_cafe/scenario_short.txt",
+    "prototypes": "video_04_teen_safety_predator_cafe/prototypes_semantic.json",
+    "prompts_dir": "video_04_teen_safety_predator_cafe/prompts/",
+    "script_corpus": "video_04_teen_safety_predator_cafe/script_corpus.txt"
+  },
+  "cas_rag_layer1_categories": [
+    "Explicit",
+    "Vague",
+    "Context-Dependent"
+  ],
+  "emotion_labels": [
+    "Shock",
+    "Disbelief",
+    "Anger",
+    "Frustration",
+    "Empathy",
+    "None"
+  ],
+  "human_verification": "required"
+}

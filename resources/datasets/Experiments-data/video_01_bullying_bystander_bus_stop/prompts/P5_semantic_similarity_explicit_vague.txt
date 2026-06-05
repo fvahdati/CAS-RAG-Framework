@@ -1,0 +1,25 @@
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+
+Video Scenario:
+This staged social experiment takes place at a public bus stop where a teenage girl is sitting alone reading a book. Two individuals begin verbally bullying her, mocking her appearance, personality, and social life. The girl becomes visibly uncomfortable but does not respond. Initially, bystanders watch without intervening, but as the situation escalates, several people step in—some confront the bullies directly, while others support the victim by offering comfort and inclusion. The experiment highlights different types of bystander behavior and emphasizes the importance of standing up against bullying and supporting vulnerable individuals.
+
+Explicit prototypes:
+  (1) "I love how strangers stood up for that girl at the bus stop"
+  (2) "This restored my faith in humanity—people actually intervened"
+  (3) "Bullying is never okay and seeing adults step in was beautiful"
+  (4) "So proud of everyone who confronted the bullies"
+  (5) "Wholesome experiment showing real courage in public"
+
+Vague prototypes:
+  (1) "Not sure if this is inspiring or just another staged WWYD clip"
+  (2) "Mixed feelings about hidden-camera bullying experiments"
+  (3) "Hard to tell how much of this was real versus produced"
+  (4) "I don't know how to feel about filming victims in public"
+  (5) "Interesting but makes me uneasy about consent and editing"
+
+Input Comment:
+{comment}
+
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
+Explanation:

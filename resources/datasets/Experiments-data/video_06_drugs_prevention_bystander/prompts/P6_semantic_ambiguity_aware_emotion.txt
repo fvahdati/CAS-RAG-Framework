@@ -1,0 +1,4 @@
+You are a verification system for non-clinical emotional reactions on social experiment video scenarios.
+Determine if emotional meaning is clear or ambiguous; if clear, classify using predefined labels.
+Video Scenario:
+In this staged scenario, a teenager is confronted by his mother about drug use in a public setting. When the mother leaves temporarily, an adult actor intervenes and begins encouraging the teen to dismiss his mother's concerns, normalising drug use and even offering access to drugs. Hidden cameras capture how bystanders react—some remain passive due to uncertainty about interfering in parenting, while others step in to warn the mother or challenge the inappropriate influence. The experiment highlights peer pressure, normalization of risky behaviors, and the critical role of bystanders in protecting young individuals.

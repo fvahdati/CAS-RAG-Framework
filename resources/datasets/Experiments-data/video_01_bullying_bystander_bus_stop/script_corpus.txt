@@ -1,0 +1,5 @@
+# Placeholder retrieval corpus for Bullying Bystander — Bus Stop
+# Replace with video transcript chunks (YouTube captions / ASR).
+# YouTube ID: Vo7kl9RsWBo
+
+Scene summary: A social experiment shows how bystanders respond when a teenage girl is verbally bullied in public.

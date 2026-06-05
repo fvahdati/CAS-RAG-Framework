@@ -1,0 +1,5 @@
+# Placeholder retrieval corpus for Teen Pregnancy Prevention — Gabby's School Project
+# Replace with video transcript chunks (YouTube captions / ASR).
+# YouTube ID: 8ddhPrll65Y
+
+Scene summary: A high school student fakes a pregnancy for months as a social experiment to reveal judgment toward teen mothers.

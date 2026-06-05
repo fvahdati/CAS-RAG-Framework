@@ -1,0 +1,5 @@
+# Placeholder retrieval corpus for Education — Tutoring Social Experiment (Diner)
+# Replace with video transcript chunks (YouTube captions / ASR).
+# YouTube ID: lqevHrpvAx8
+
+Scene summary: A hidden camera experiment observes how children react when a tutor verbally mistreats a struggling student.

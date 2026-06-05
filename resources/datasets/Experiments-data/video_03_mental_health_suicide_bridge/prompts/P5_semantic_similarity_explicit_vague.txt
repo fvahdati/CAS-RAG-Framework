@@ -1,0 +1,25 @@
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+
+Video Scenario:
+This social experiment presents a staged scenario in which a young man appears emotionally distressed and attempts to jump off a bridge. Hidden cameras capture how bystanders react in real time. Several strangers intervene, showing empathy and urgency—some physically stop him, while others offer emotional support, reassurance, and companionship. They encourage him to talk, remind him of his value, and try to de-escalate the situation. The experiment highlights the importance of human compassion and the role of bystanders in preventing tragedy, emphasizing themes of depression, loneliness, and human connection.
+
+Explicit prototypes:
+  (1) "I'm crying—the kindness in this video gives me so much hope"
+  (2) "Small acts of compassion like this can really save someone's life"
+  (3) "This restored my faith in humanity after a rough week"
+  (4) "We need more people who stop and actually care in public"
+  (5) "So powerful to see strangers offer real support on a bridge"
+
+Vague prototypes:
+  (1) "I don't know if I'd know what to say in that situation myself"
+  (2) "This is hard to watch but I think it's important content"
+  (3) "Mixed emotions—inspiring but also deeply sad at the same time"
+  (4) "Not sure if filming someone in distress is ethical even for awareness"
+  (5) "I'm conflicted about bystander experiments involving mental health"
+
+Input Comment:
+{comment}
+
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
+Explanation:

@@ -1,0 +1,5 @@
+# Placeholder retrieval corpus for Teen Safety — Predator Luring (Café)
+# Replace with video transcript chunks (YouTube captions / ASR).
+# YouTube ID: YdqRLuYkYDk
+
+Scene summary: Bystanders react when a teenage girl is lured by an older man into a potentially dangerous situation.

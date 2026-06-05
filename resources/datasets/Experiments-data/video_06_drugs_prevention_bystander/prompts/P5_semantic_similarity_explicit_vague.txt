@@ -1,0 +1,25 @@
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+
+Video Scenario:
+In this staged scenario, a teenager is confronted by his mother about drug use in a public setting. When the mother leaves temporarily, an adult actor intervenes and begins encouraging the teen to dismiss his mother's concerns, normalising drug use and even offering access to drugs. Hidden cameras capture how bystanders react—some remain passive due to uncertainty about interfering in parenting, while others step in to warn the mother or challenge the inappropriate influence. The experiment highlights peer pressure, normalization of risky behaviors, and the critical role of bystanders in protecting young individuals.
+
+Explicit prototypes:
+  (1) "Thank god someone told the mom what that stranger was saying"
+  (2) "No teenager should be told drugs are fine—angry this happened"
+  (3) "Proud of the people who stepped in against that adult"
+  (4) "This is exactly why bystanders matter for teen safety"
+  (5) "Disgusted by the actor normalising drug use to a kid"
+
+Vague prototypes:
+  (1) "Not sure if I'd interfere in someone else's parenting in public"
+  (2) "Mixed feelings about staging drug pressure for a video"
+  (3) "Hard to watch but maybe it raises awareness"
+  (4) "I don't know if this experiment went too far"
+  (5) "Uncomfortable content regardless of the message"
+
+Input Comment:
+{comment}
+
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
+Explanation:

@@ -1,0 +1,4 @@
+You are a verification system for non-clinical emotional reactions on social experiment video scenarios.
+Determine if emotional meaning is clear or ambiguous; if clear, classify using predefined labels.
+Video Scenario:
+A hidden camera experiment is set up in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude and verbally harsh. The situation is designed to test how other children nearby will respond. Some hesitate at first, but several step in to help the struggling student, offering both academic support and emotional encouragement. The experiment reveals that even young children can recognise unfair treatment and act with empathy, highlighting the importance of kindness, confidence, and standing up against bullying behaviour in educational settings.

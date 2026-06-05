@@ -1,0 +1,2 @@
+# CAS-RAG — install via: pip install -e ".[all]"
+-e .[all]

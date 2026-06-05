@@ -1,0 +1,33 @@
+{
+  "video_number": 6,
+  "slug": "video_06_drugs_prevention_bystander",
+  "display_name": "Drug Prevention \u2014 Normalising Use (Public Setting)",
+  "youtube_video_id": "0yve1ezfeUU",
+  "topic_theme": "Drug-prevention context for adolescents",
+  "evaluation_label": "Teenagers-Drugs",
+  "dataset_source_file": "comments_teenagers drugs",
+  "comments_per_dataset": 100,
+  "scenario_short": "A social experiment tests whether people intervene when an adult encourages a teenager to normalise drug use.",
+  "scenario_full": "In this staged scenario, a teenager is confronted by his mother about drug use in a public setting. When the mother leaves temporarily, an adult actor intervenes and begins encouraging the teen to dismiss his mother's concerns, normalising drug use and even offering access to drugs. Hidden cameras capture how bystanders react\u2014some remain passive due to uncertainty about interfering in parenting, while others step in to warn the mother or challenge the inappropriate influence. The experiment highlights peer pressure, normalization of risky behaviors, and the critical role of bystanders in protecting young individuals.",
+  "paths": {
+    "scenario_full": "video_06_drugs_prevention_bystander/scenario_full.txt",
+    "scenario_short": "video_06_drugs_prevention_bystander/scenario_short.txt",
+    "prototypes": "video_06_drugs_prevention_bystander/prototypes_semantic.json",
+    "prompts_dir": "video_06_drugs_prevention_bystander/prompts/",
+    "script_corpus": "video_06_drugs_prevention_bystander/script_corpus.txt"
+  },
+  "cas_rag_layer1_categories": [
+    "Explicit",
+    "Vague",
+    "Context-Dependent"
+  ],
+  "emotion_labels": [
+    "Shock",
+    "Disbelief",
+    "Anger",
+    "Frustration",
+    "Empathy",
+    "None"
+  ],
+  "human_verification": "required"
+}

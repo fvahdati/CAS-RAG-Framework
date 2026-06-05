@@ -1,0 +1,33 @@
+{
+  "video_number": 5,
+  "slug": "video_05_teen_pregnancy_gabby_experiment",
+  "display_name": "Teen Pregnancy Prevention \u2014 Gabby's School Project",
+  "youtube_video_id": "8ddhPrll65Y",
+  "topic_theme": "Teen-pregnancy prevention",
+  "evaluation_label": "TeenPregnancy",
+  "dataset_source_file": "comments_teenPregnancy",
+  "comments_per_dataset": 100,
+  "scenario_short": "A high school student fakes a pregnancy for months as a social experiment to reveal judgment toward teen mothers.",
+  "scenario_full": "A top-performing high school student named Gabby conducts a bold social experiment by pretending to be pregnant for over six months. With only a few people aware of the truth, she convinces her classmates, teachers, and community that she is expecting a child. As the fake pregnancy progresses, she carefully documents how people's behavior toward her changes\u2014friends distance themselves, teachers lower their expectations, and rumors spread. Despite her strong academic background and ambitions, she is reduced to a stereotype. At a school assembly, she reveals the truth, exposing how society unfairly judges and labels teenage mothers. Her project becomes a powerful statement about bias, perception, and social judgment.",
+  "paths": {
+    "scenario_full": "video_05_teen_pregnancy_gabby_experiment/scenario_full.txt",
+    "scenario_short": "video_05_teen_pregnancy_gabby_experiment/scenario_short.txt",
+    "prototypes": "video_05_teen_pregnancy_gabby_experiment/prototypes_semantic.json",
+    "prompts_dir": "video_05_teen_pregnancy_gabby_experiment/prompts/",
+    "script_corpus": "video_05_teen_pregnancy_gabby_experiment/script_corpus.txt"
+  },
+  "cas_rag_layer1_categories": [
+    "Explicit",
+    "Vague",
+    "Context-Dependent"
+  ],
+  "emotion_labels": [
+    "Shock",
+    "Disbelief",
+    "Anger",
+    "Frustration",
+    "Empathy",
+    "None"
+  ],
+  "human_verification": "required"
+}

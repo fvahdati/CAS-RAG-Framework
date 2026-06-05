@@ -1,0 +1,5 @@
+# Placeholder retrieval corpus for Drug Prevention — Normalising Use (Public Setting)
+# Replace with video transcript chunks (YouTube captions / ASR).
+# YouTube ID: 0yve1ezfeUU
+
+Scene summary: A social experiment tests whether people intervene when an adult encourages a teenager to normalise drug use.

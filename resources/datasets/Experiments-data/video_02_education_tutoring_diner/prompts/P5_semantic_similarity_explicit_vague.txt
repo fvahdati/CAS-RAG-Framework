@@ -1,0 +1,25 @@
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+
+Video Scenario:
+A hidden camera experiment is set up in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude and verbally harsh. The situation is designed to test how other children nearby will respond. Some hesitate at first, but several step in to help the struggling student, offering both academic support and emotional encouragement. The experiment reveals that even young children can recognise unfair treatment and act with empathy, highlighting the importance of kindness, confidence, and standing up against bullying behaviour in educational settings.
+
+Explicit prototypes:
+  (1) "The way those kids jumped in proves empathy can beat a bad adult example every time."
+  (2) "This is exactly why kindness and confidence matter more than any worksheet."
+  (3) "Restores a little faith—kids noticing unfairness and refusing to shrug it off."
+  (4) "Great reminder that bullying in learning spaces is never okay, no matter the adult's excuse."
+  (5) "Wholesome watch; we need way more classrooms that normalise standing up for someone struggling."
+
+Vague prototypes:
+  (1) "Cute message but I'm still uneasy about hidden-camera setups in public places."
+  (2) "Mixed feelings—is this stitched like reality TV or genuinely spontaneous?"
+  (3) "Inspiring edits, though I wish we knew consent and editing context upfront."
+  (4) "Not sure the lesson needs a diner stunt; feels performative even if the vibe is sweet."
+  (5) "Hard to tell what's heartfelt vs what producers nudged; still liked the takeaway."
+
+Input Comment:
+{comment}
+
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
+Explanation:

@@ -1,0 +1,25 @@
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+
+Video Scenario:
+A top-performing high school student named Gabby conducts a bold social experiment by pretending to be pregnant for over six months. With only a few people aware of the truth, she convinces her classmates, teachers, and community that she is expecting a child. As the fake pregnancy progresses, she carefully documents how people's behavior toward her changes—friends distance themselves, teachers lower their expectations, and rumors spread. Despite her strong academic background and ambitions, she is reduced to a stereotype. At a school assembly, she reveals the truth, exposing how society unfairly judges and labels teenage mothers. Her project becomes a powerful statement about bias, perception, and social judgment.
+
+Explicit prototypes:
+  (1) "Sacrificing your last year of school to make such an incredible statement—wow"
+  (2) "This project exposed how cruel people are to pregnant teens"
+  (3) "Gabby is brilliant for showing real-world bias so clearly"
+  (4) "Every school should watch this assembly reveal"
+  (5) "I'm furious at how her friends treated her once they thought she was pregnant"
+
+Vague prototypes:
+  (1) "Not sure how I feel about faking pregnancy for a school project"
+  (2) "Mixed emotions—it taught a lesson but also feels intense"
+  (3) "I don't know if this method was fair to her classmates"
+  (4) "Powerful message but ethically complicated to deceive everyone"
+  (5) "Important topic but hard to judge the experiment design"
+
+Input Comment:
+{comment}
+
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
+Explanation:

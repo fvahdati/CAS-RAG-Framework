@@ -1,0 +1,8 @@
+{
+  "name": "CAS-RAG",
+  "version": "1.0.0",
+  "thesis_alignment": "Chapter 4 methodology",
+  "algorithms": ["algorithm_1", "algorithm_2", "algorithm_3", "algorithm_4", "cas_rag"],
+  "prompt_version": "v1",
+  "human_verification": "required"
+}

@@ -1,0 +1,5 @@
+# Placeholder retrieval corpus for Mental Health — Bridge Distress Experiment
+# Replace with video transcript chunks (YouTube captions / ASR).
+# YouTube ID: Gwo_O0SFwak
+
+Scene summary: A staged social experiment shows how strangers react when a distressed young man appears to be attempting suicide on a bridge.

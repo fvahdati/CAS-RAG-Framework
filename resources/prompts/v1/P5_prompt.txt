@@ -1,0 +1,9 @@
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+Compare the comment against Explicit and Vague prototype groups.
+Video Scenario:
+{scenario}
+Input Comment:
+{comment}
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
+Explanation:

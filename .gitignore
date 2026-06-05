@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.pytest_cache/
+.ruff_cache/
+dist/
+*.egg-info/
+data/human_verification_queue.json
+data/**/*.json
+!resources/**/*.json
+!resources/**/*.csv
+.DS_Store
+*.log

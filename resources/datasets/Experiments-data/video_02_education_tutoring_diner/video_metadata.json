@@ -1,0 +1,33 @@
+{
+  "video_number": 2,
+  "slug": "video_02_education_tutoring_diner",
+  "display_name": "Education \u2014 Tutoring Social Experiment (Diner)",
+  "youtube_video_id": "lqevHrpvAx8",
+  "topic_theme": "Educational videos for adolescents",
+  "evaluation_label": "Education",
+  "dataset_source_file": "comments_education",
+  "comments_per_dataset": 100,
+  "scenario_short": "A hidden camera experiment observes how children react when a tutor verbally mistreats a struggling student.",
+  "scenario_full": "A hidden camera experiment is set up in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude and verbally harsh. The situation is designed to test how other children nearby will respond. Some hesitate at first, but several step in to help the struggling student, offering both academic support and emotional encouragement. The experiment reveals that even young children can recognise unfair treatment and act with empathy, highlighting the importance of kindness, confidence, and standing up against bullying behaviour in educational settings.",
+  "paths": {
+    "scenario_full": "video_02_education_tutoring_diner/scenario_full.txt",
+    "scenario_short": "video_02_education_tutoring_diner/scenario_short.txt",
+    "prototypes": "video_02_education_tutoring_diner/prototypes_semantic.json",
+    "prompts_dir": "video_02_education_tutoring_diner/prompts/",
+    "script_corpus": "video_02_education_tutoring_diner/script_corpus.txt"
+  },
+  "cas_rag_layer1_categories": [
+    "Explicit",
+    "Vague",
+    "Context-Dependent"
+  ],
+  "emotion_labels": [
+    "Shock",
+    "Disbelief",
+    "Anger",
+    "Frustration",
+    "Empathy",
+    "None"
+  ],
+  "human_verification": "required"
+}

@@ -1,0 +1,25 @@
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+
+Video Scenario:
+This social experiment shows a 15-year-old girl being approached by an older man who attempts to lure her into a private setting under the promise of helping her music career. The interaction unfolds in a public café, where hidden cameras record how bystanders react. Some people intervene, warning the girl and confronting the man, while others hesitate. The situation explores teenage vulnerability, manipulation tactics, and the importance of awareness and intervention. It highlights how emotional naivety, trust, and social pressure can place teenagers in risky situations, linking closely to mental and emotional well-being.
+
+Explicit prototypes:
+  (1) "Thank god those women stepped in—that predator needed to be stopped"
+  (2) "Every parent should show this to their teenage kids"
+  (3) "So angry at the man but grateful people intervened"
+  (4) "This is why we teach girls to trust their instincts in public"
+  (5) "Heartwarming to see strangers protect her in the café"
+
+Vague prototypes:
+  (1) "Not sure how real this setup is but it's unsettling"
+  (2) "Mixed feelings about staging predatory behaviour for views"
+  (3) "I don't know if I'd react that fast in a café"
+  (4) "Hard to watch regardless of whether it's an experiment"
+  (5) "Interesting social experiment but ethically complicated"
+
+Input Comment:
+{comment}
+
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
+Explanation:

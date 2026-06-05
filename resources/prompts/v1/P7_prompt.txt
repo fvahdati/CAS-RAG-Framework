@@ -1,0 +1,9 @@
+You are an emotion classification system for non-clinical reactions in short video scenarios.
+Classify using ONLY the comment and scenario. No vagueness checking.
+Video Scenario:
+{scenario}
+Input Comment:
+{comment}
+Respond ONLY:
+Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None>
+Explanation:

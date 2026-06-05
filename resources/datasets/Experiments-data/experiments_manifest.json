@@ -1,0 +1,66 @@
+{
+  "videos": [
+    {
+      "video_number": 1,
+      "slug": "video_01_bullying_bystander_bus_stop",
+      "display_name": "Bullying Bystander \u2014 Bus Stop",
+      "youtube_video_id": "Vo7kl9RsWBo",
+      "evaluation_label": "Bullying",
+      "metadata_file": "video_01_bullying_bystander_bus_stop/video_metadata.json",
+      "prototypes_file": "video_01_bullying_bystander_bus_stop/prototypes_semantic.json",
+      "prompts_directory": "video_01_bullying_bystander_bus_stop/prompts/"
+    },
+    {
+      "video_number": 2,
+      "slug": "video_02_education_tutoring_diner",
+      "display_name": "Education \u2014 Tutoring Social Experiment (Diner)",
+      "youtube_video_id": "lqevHrpvAx8",
+      "evaluation_label": "Education",
+      "metadata_file": "video_02_education_tutoring_diner/video_metadata.json",
+      "prototypes_file": "video_02_education_tutoring_diner/prototypes_semantic.json",
+      "prompts_directory": "video_02_education_tutoring_diner/prompts/"
+    },
+    {
+      "video_number": 3,
+      "slug": "video_03_mental_health_suicide_bridge",
+      "display_name": "Mental Health \u2014 Bridge Distress Experiment",
+      "youtube_video_id": "Gwo_O0SFwak",
+      "evaluation_label": "Suicide",
+      "metadata_file": "video_03_mental_health_suicide_bridge/video_metadata.json",
+      "prototypes_file": "video_03_mental_health_suicide_bridge/prototypes_semantic.json",
+      "prompts_directory": "video_03_mental_health_suicide_bridge/prompts/"
+    },
+    {
+      "video_number": 4,
+      "slug": "video_04_teen_safety_predator_cafe",
+      "display_name": "Teen Safety \u2014 Predator Luring (Caf\u00e9)",
+      "youtube_video_id": "YdqRLuYkYDk",
+      "evaluation_label": "TeenSafety",
+      "metadata_file": "video_04_teen_safety_predator_cafe/video_metadata.json",
+      "prototypes_file": "video_04_teen_safety_predator_cafe/prototypes_semantic.json",
+      "prompts_directory": "video_04_teen_safety_predator_cafe/prompts/"
+    },
+    {
+      "video_number": 5,
+      "slug": "video_05_teen_pregnancy_gabby_experiment",
+      "display_name": "Teen Pregnancy Prevention \u2014 Gabby's School Project",
+      "youtube_video_id": "8ddhPrll65Y",
+      "evaluation_label": "TeenPregnancy",
+      "metadata_file": "video_05_teen_pregnancy_gabby_experiment/video_metadata.json",
+      "prototypes_file": "video_05_teen_pregnancy_gabby_experiment/prototypes_semantic.json",
+      "prompts_directory": "video_05_teen_pregnancy_gabby_experiment/prompts/"
+    },
+    {
+      "video_number": 6,
+      "slug": "video_06_drugs_prevention_bystander",
+      "display_name": "Drug Prevention \u2014 Normalising Use (Public Setting)",
+      "youtube_video_id": "0yve1ezfeUU",
+      "evaluation_label": "Teenagers-Drugs",
+      "metadata_file": "video_06_drugs_prevention_bystander/video_metadata.json",
+      "prototypes_file": "video_06_drugs_prevention_bystander/prototypes_semantic.json",
+      "prompts_directory": "video_06_drugs_prevention_bystander/prompts/"
+    }
+  ],
+  "total_comments": 600,
+  "comments_per_video": 100
+}
