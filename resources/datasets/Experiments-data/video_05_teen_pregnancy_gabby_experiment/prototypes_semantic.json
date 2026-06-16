@@ -8,18 +8,18 @@
     "Every school should watch this assembly reveal",
     "I'm furious at how her friends treated her once they thought she was pregnant"
   ],
-  "vague": [
-    "Not sure how I feel about faking pregnancy for a school project",
-    "Mixed emotions\u2014it taught a lesson but also feels intense",
-    "I don't know if this method was fair to her classmates",
-    "Powerful message but ethically complicated to deceive everyone",
-    "Important topic but hard to judge the experiment design"
-  ],
   "context_dependent": [
     "When she revealed it at the assembly I lost it",
     "Gabby Rodriguez is an icon for doing this project",
     "That moment her friends realised it was fake\u2014chills",
     "The teacher who lowered expectations should be ashamed",
     "Who else paused when she showed the six-month timeline"
+  ],
+  "ambiguous": [
+    "Not sure how I feel about faking pregnancy for a school project",
+    "Mixed emotions\u2014it taught a lesson but also feels intense",
+    "I don't know if this method was fair to her classmates",
+    "Powerful message but ethically complicated to deceive everyone",
+    "Important topic but hard to judge the experiment design"
   ]
 }

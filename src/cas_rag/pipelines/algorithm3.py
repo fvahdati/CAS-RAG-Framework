@@ -29,7 +29,7 @@ def run_algorithm3(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             trace=[f"sigma={sigma}, needs_rag=True -> P2"],
         )
 
-    if sigma == "Vague":
+    if sigma == "Ambiguous":
         prompts.append(PromptId.P6_AMBIGUITY_AWARE)
         label, pending = ctx.ambiguity.classify_p6(inp.comment, ctx.scenario, inp.comment_id, "algorithm_3")
         if pending:
@@ -39,7 +39,7 @@ def run_algorithm3(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.PENDING_HUMAN,
                 pending_human=True,
                 prompts_invoked=prompts,
-                trace=["sigma=Vague -> P6=Ambiguous -> human verification"],
+                trace=["sigma=Ambiguous -> P6=Ambiguous -> human verification"],
             )
         if label is None:
             return PipelineResult(
@@ -55,7 +55,7 @@ def run_algorithm3(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
             prompts_invoked=prompts,
-            trace=["sigma=Vague -> P6 clear"],
+            trace=["sigma=Ambiguous -> P6 clear"],
         )
 
     label, expl = ctx.no_rag.classify_p7(inp.comment, ctx.scenario)

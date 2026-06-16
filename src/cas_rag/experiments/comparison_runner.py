@@ -49,6 +49,8 @@ def _norm_category(value: str | None) -> str:
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return ""
     s = str(value).strip().lower().replace("-", "_").replace(" ", "_")
+    if s == "vague":
+        s = "ambiguous"
     if s == "context_dependent":
         return "context_dependent"
     return s
@@ -80,14 +82,14 @@ def auto_resolve_pending_human(
     for item in list(human.get_pending()):
         cid = item["comment_id"]
         exp = _norm_category(expected_by_comment.get(cid, ""))
-        if exp == "vague":
+        if exp in ("ambiguous", "vague"):
             decision = HumanReviewDecision(
                 comment_id=cid,
                 confirms_ambiguous=True,
                 resolvable=False,
                 assigned_label=None,
                 reviewer_id="batch_gold_router",
-                notes="Auto-resolved: gold expected_category=vague",
+                notes="Auto-resolved: gold expected_category=ambiguous",
             )
         else:
             try:
@@ -100,7 +102,7 @@ def auto_resolve_pending_human(
                 resolvable=True,
                 assigned_label=label,
                 reviewer_id="batch_gold_router",
-                notes=f"Auto-resolved: gold expected_category={exp or 'not_vague'}",
+                notes=f"Auto-resolved: gold expected_category={exp or 'not_ambiguous'}",
             )
         human.submit_review(item["queue_id"], decision)
         resolved += 1

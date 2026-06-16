@@ -28,14 +28,13 @@ class EmotionLabel(str, Enum):
     FRUSTRATION = "Frustration"
     EMPATHY = "Empathy"
     NONE = "None"
-    VAGUE = "Vague"
     AMBIGUOUS = "Ambiguous"
     DISCARDED = "DISCARDED"
 
 
 class SemanticCategory(str, Enum):
     EXPLICIT = "Explicit"
-    VAGUE = "Vague"
+    AMBIGUOUS = "Ambiguous"
     CONTEXT_DEPENDENT = "Context-Dependent"
 
 

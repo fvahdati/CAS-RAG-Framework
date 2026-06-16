@@ -1,4 +1,4 @@
-"""Semantic similarity: Explicit / Vague / Context-Dependent (thesis Layer 1)."""
+"""Semantic similarity: Explicit / Ambiguous / Context-Dependent (thesis Layer 1)."""
 
 from __future__ import annotations
 
@@ -9,6 +9,16 @@ import numpy as np
 
 from cas_rag.config.settings import get_settings
 from cas_rag.core.enums import SemanticCategory
+
+
+def _load_prototype_groups(data: dict) -> dict[str, list[str]]:
+    """Support legacy JSON key ``vague`` and current ``ambiguous``."""
+    ambiguous = data.get("ambiguous") or data.get("vague") or []
+    return {
+        "explicit": data["explicit"],
+        "ambiguous": ambiguous,
+        "context_dependent": data["context_dependent"],
+    }
 
 
 class SemanticSimilarityEngine:
@@ -29,13 +39,13 @@ class SemanticSimilarityEngine:
         self.model_name = model_name or settings.embedding_model
         path = prototypes_path or (settings.project_root / "resources" / "prototypes" / "prototypes.json")
         data = json.loads(path.read_text())
-        self.prototypes = {k: data[k] for k in ("explicit", "vague", "context_dependent")}
+        self.prototypes = _load_prototype_groups(data)
         self._model = None
         self._proto_emb: dict[str, np.ndarray] | None = None
         yaml_cfg = settings.load_yaml()
         sem = yaml_cfg.get("semantic", {})
-        self.margin = sem.get("margin_explicit_vague", 0.12)
-        self.band = sem.get("band_explicit_vague", 0.08)
+        self.margin = sem.get("margin_explicit_vague", sem.get("margin_explicit_ambiguous", 0.12))
+        self.band = sem.get("band_explicit_vague", sem.get("band_explicit_ambiguous", 0.08))
 
     def _ensure_encoder(self):
         if self._model is not None or self._proto_emb is not None:
@@ -76,11 +86,11 @@ class SemanticSimilarityEngine:
 
     def _heuristic_scores(self, comment: str) -> dict[str, float]:
         lower = comment.lower()
-        vague_cues = ("uneasy", "mixed", "not sure", "wow", "amazing", "hard to tell", "performative")
+        ambiguous_cues = ("uneasy", "mixed", "not sure", "wow", "amazing", "hard to tell", "performative")
         ctx_cues = ("harper", "aubrey", "waitress", "when ", "that part", "tutor", "kid's", "wwyd")
-        scores = {"explicit": 0.5, "vague": 0.3, "context_dependent": 0.3}
-        if any(c in lower for c in vague_cues):
-            scores["vague"] = 0.85
+        scores = {"explicit": 0.5, "ambiguous": 0.3, "context_dependent": 0.3}
+        if any(c in lower for c in ambiguous_cues):
+            scores["ambiguous"] = 0.85
             scores["explicit"] = 0.2
         elif any(c in lower for c in ctx_cues):
             scores["context_dependent"] = 0.85
@@ -99,17 +109,17 @@ class SemanticSimilarityEngine:
         winner = max(scores, key=scores.get)
         cat_map = {
             "explicit": SemanticCategory.EXPLICIT,
-            "vague": SemanticCategory.VAGUE,
+            "ambiguous": SemanticCategory.AMBIGUOUS,
             "context_dependent": SemanticCategory.CONTEXT_DEPENDENT,
         }
         category = cat_map[winner]
-        s_exp, s_vag = scores["explicit"], scores["vague"]
-        if category == SemanticCategory.VAGUE and s_exp >= s_vag - self.band:
+        s_exp, s_amb = scores["explicit"], scores["ambiguous"]
+        if category == SemanticCategory.AMBIGUOUS and s_exp >= s_amb - self.band:
             category = SemanticCategory.EXPLICIT
         return category, scores
 
     def classify_two_way(self, comment: str) -> str:
         cat, _ = self.classify_three_way(comment)
-        if cat == SemanticCategory.VAGUE:
-            return "Vague"
+        if cat == SemanticCategory.AMBIGUOUS:
+            return "Ambiguous"
         return "Explicit"

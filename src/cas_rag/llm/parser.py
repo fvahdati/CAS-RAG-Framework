@@ -11,8 +11,11 @@ def parse_unknown_reference(text: str) -> bool:
 
 
 def parse_semantic_similarity(text: str) -> str:
-    m = re.search(r"semantic\s*similarity\s*label\s*:\s*(explicit|vague)", text, re.I)
-    return m.group(1).title() if m else "Explicit"
+    m = re.search(r"semantic\s*similarity\s*label\s*:\s*(explicit|ambiguous|vague)", text, re.I)
+    if not m:
+        return "Explicit"
+    label = m.group(1).lower()
+    return "Ambiguous" if label in ("ambiguous", "vague") else "Explicit"
 
 
 def parse_emotion_label(text: str) -> EmotionLabel:
@@ -32,7 +35,7 @@ def parse_emotion_label(text: str) -> EmotionLabel:
         "frustration": EmotionLabel.FRUSTRATION,
         "empathy": EmotionLabel.EMPATHY,
         "none": EmotionLabel.NONE,
-        "vague": EmotionLabel.VAGUE,
+        "vague": EmotionLabel.AMBIGUOUS,
         "ambiguous": EmotionLabel.AMBIGUOUS,
         "discarded": EmotionLabel.DISCARDED,
     }

@@ -1,5 +1,15 @@
-# Placeholder retrieval corpus for Education — Tutoring Social Experiment (Diner)
-# Replace with video transcript chunks (YouTube captions / ASR).
-# YouTube ID: lqevHrpvAx8
-
-Scene summary: A hidden camera experiment observes how children react when a tutor verbally mistreats a struggling student.
+Title: Children Respond to a Harsh Tutor in a Hidden Camera Social Experiment
+A hidden camera social experiment takes place in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude, impatient, and verbally harsh.
+The situation is designed to observe how nearby children react to unfair treatment and emotional distress in an educational setting.
+Several children initially hesitate but eventually step in to help the struggling student with academic assistance, emotional encouragement, reassurance, empathy, and confidence-building support.
+The experiment highlights empathy among children, reactions to bullying behaviour, emotional support in learning environments, fairness and kindness, confidence and encouragement, and standing up for someone being mistreated.
+Contextual themes include a hidden camera social experiment, diner environment, struggling student, verbally aggressive tutor, peer empathy, emotional encouragement, educational bullying, confidence building, children helping strangers, social responsibility, emotional support, and kindness in public spaces.
+A child actor struggles with basic math at a booth while the tutor becomes verbally harsh and impatient.
+Nearby children offer academic help and emotional encouragement to the struggling student.
+Children recognise unfair treatment and act with empathy toward the struggling student.
+The tutor's harsh behaviour represents educational bullying in a learning environment.
+Bystander children demonstrate kindness, confidence, and willingness to stand up for someone mistreated.
+Aubrey and other children respond calmly and supportively during the hidden camera scenario.
+Harper offers emotional support during a tense tutoring moment at the diner.
+A child says that everybody can be a hero when standing up for someone struggling.
+The waitress observes that the tutor is acting as part of the social experiment setup.

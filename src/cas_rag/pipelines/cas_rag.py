@@ -22,7 +22,7 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             trace=trace + ["Explicit -> P7"],
         )
 
-    if category == SemanticCategory.VAGUE:
+    if category == SemanticCategory.AMBIGUOUS:
         label, pending = ctx.ambiguity.classify_p6(inp.comment, ctx.scenario, inp.comment_id, "cas_rag")
         if pending:
             return PipelineResult(
@@ -32,7 +32,7 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 semantic_category=category,
                 pending_human=True,
                 prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
-                trace=trace + ["Vague -> P6=Ambiguous -> human verification"],
+                trace=trace + ["Ambiguous -> P6=Ambiguous -> human verification"],
             )
         if label is None:
             return PipelineResult(
@@ -50,7 +50,7 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             emotion_label=label,
             semantic_category=category,
             prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
-            trace=trace + ["Vague -> P6 clear"],
+            trace=trace + ["Ambiguous -> P6 clear"],
         )
 
     # Context-Dependent

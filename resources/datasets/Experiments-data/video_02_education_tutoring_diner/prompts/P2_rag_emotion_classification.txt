@@ -20,10 +20,10 @@ Disbelief: A reaction expressing difficulty accepting, believing, or trusting wh
 Anger: A reaction expressing irritation, outrage, hostility, or moral condemnation.
 Frustration: A reaction expressing annoyance, disappointment, helplessness, or emotional dissatisfaction.
 Empathy: A reaction expressing compassion, emotional concern, support, kindness, or understanding toward others.
-None: Use this label when the comment’s emotional reaction does not belong to any of the categories below: Shock, Disbelief, Anger, Frustration, Empathy. This label is included to avoid forcing the model to assign an emotional category when no meaningful emotion is explicitly expressed.
+None: Use this label when the comment's emotional reaction does not belong to any of the categories below: Shock, Disbelief, Anger, Frustration, Empathy. This label is included to avoid forcing the model to assign an emotional category when the ground emotional label is different from the above 5 labels.
 
 
-
+These comments may contain a positive reaction, but they do not provide enough contextual evidence to determine a reliable emotional interpretation related to the video scenario.
 Instructions:
 • Use only explicitly available evidence.
 • Do not assume missing context beyond the retrieved context.

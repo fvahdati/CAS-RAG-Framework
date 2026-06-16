@@ -18,7 +18,7 @@
   },
   "cas_rag_layer1_categories": [
     "Explicit",
-    "Vague",
+    "Ambiguous",
     "Context-Dependent"
   ],
   "emotion_labels": [

@@ -10,7 +10,7 @@ Aligned with the thesis methodology (Chapter 4), the platform implements:
 | **Algorithm 2** | spaCy–LLM (linguistic gate → P2 / P3 → P4 + human verification) |
 | **Algorithm 3** | spaCy + Semantic Similarity (P5/embedding + P2 / P7 / P6 + human verification) |
 | **Algorithm 4** | LLM + Semantic Similarity (σ → P6 / ROUTE_TO_RAG → P2 / P7) |
-| **CAS-RAG** | Three-way semantic routing (Explicit / Vague / Context-Dependent) + selective RAG |
+| **CAS-RAG** | Three-way semantic routing (Explicit / Ambiguous / Context-Dependent) + selective RAG |
 
 ## Architecture
 

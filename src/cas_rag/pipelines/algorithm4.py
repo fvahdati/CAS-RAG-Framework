@@ -8,7 +8,7 @@ from cas_rag.pipelines.base import PipelineContext
 def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
     sigma = ctx.semantic.classify_two_way(inp.comment)
 
-    if sigma == "Vague":
+    if sigma == "Ambiguous":
         label, pending = ctx.ambiguity.classify_p6(inp.comment, ctx.scenario, inp.comment_id, "algorithm_4")
         if pending:
             return PipelineResult(
@@ -17,7 +17,7 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.PENDING_HUMAN,
                 pending_human=True,
                 prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
-                trace=["sigma=Vague -> P6=Ambiguous -> human verification"],
+                trace=["sigma=Ambiguous -> P6=Ambiguous -> human verification"],
             )
         if label is None:
             return PipelineResult(
@@ -33,7 +33,7 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
             prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
-            trace=["sigma=Vague -> P6 clear"],
+            trace=["sigma=Ambiguous -> P6 clear"],
         )
 
     # ROUTE_TO_RAG: explicit comments that need contextual grounding
