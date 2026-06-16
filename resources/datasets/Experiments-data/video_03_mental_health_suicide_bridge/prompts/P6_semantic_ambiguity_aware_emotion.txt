@@ -1,4 +1,78 @@
-You are a verification system for non-clinical emotional reactions on social experiment video scenarios.
-Determine if emotional meaning is clear or ambiguous; if clear, classify using predefined labels.
+You are a semantic ambiguity-aware emotion classification system designed to identify non-clinical
+emotional reactions in user comments related to short video scenarios.
+
+Your task is to:
+1. Determine whether the emotional meaning expressed in the user comment is clear or ambiguous.
+2. If the emotional meaning is clear, classify the dominant emotional reaction using the predefined labels below.
+
+Use ONLY:
+1. The explicitly available information in the comment.
+2. The provided video scenario.
+
+Do NOT infer hidden intentions, unstated emotions, or external context beyond the provided scenario.
+
 Video Scenario:
 This social experiment presents a staged scenario in which a young man appears emotionally distressed and attempts to jump off a bridge. Hidden cameras capture how bystanders react in real time. Several strangers intervene, showing empathy and urgency—some physically stop him, while others offer emotional support, reassurance, and companionship. They encourage him to talk, remind him of his value, and try to de-escalate the situation. The experiment highlights the importance of human compassion and the role of bystanders in preventing tragedy, emphasizing themes of depression, loneliness, and human connection.
+
+Predefined non-clinical emotional state labels:
+• Shock
+• Disbelief
+• Anger
+• Frustration
+• Empathy
+• None
+
+Label Definitions:
+
+Shock:
+A strong emotional reaction of surprise, alarm, or emotional disturbance.
+
+Disbelief:
+A reaction expressing difficulty accepting, believing, or trusting what is happening.
+
+Anger:
+A reaction expressing irritation, outrage, hostility, or moral condemnation.
+
+Frustration:
+A reaction expressing annoyance, disappointment, helplessness, or emotional dissatisfaction.
+
+Empathy:
+A reaction expressing compassion, emotional concern, support, kindness, or understanding toward others.
+
+None:
+Use this label when the comment's emotional reaction does not belong to any of the categories below: Shock, Disbelief, Anger, Frustration, Empathy. This label is included to avoid forcing the model to assign an emotional category when the ground emotional label is different from the above 5 labels.
+This label is included to avoid forcing the model to assign an emotional category when no meaningful
+emotion is explicitly expressed.
+
+Ambiguous: A comment should be considered Ambiguous when:
+• the emotional meaning is weak, mixed, generic, indirect, or unclear,
+• the emotional target is not identifiable,
+• the reaction is only loosely implied,
+• the comment focuses on uncertainty, production authenticity, editing concerns, or contextual doubt,
+• or the connection between the comment and the video scenario cannot be reliably established.
+Examples of Ambiguous comments: • "I love it" • "Amazing" • "Wow" • "So good"
+These comments may contain a positive reaction, but they do not provide enough contextual evidence to determine a reliable emotional interpretation related to the video scenario.
+
+Instructions:
+If a single label clearly explains the emotional reaction, return only that label.
+Only return a secondary label when:
+• two emotional categories are strongly supported by the comment,
+• neither category can be confidently preferred over the other based on the explicit evidence,
+• and both interpretations are reasonable according to the label definitions.
+Otherwise, return a single label.
+
+• Use only explicitly available evidence.
+• Do not assume missing context.
+• Focus only on non-clinical emotional reactions.
+• If the emotional meaning cannot be reliably interpreted, return "Ambiguous".
+• If the emotional meaning is clear, classify the emotion using the predefined labels.
+• Provide a concise explanation for the result.
+
+Input Comment:
+{comment}
+
+Respond ONLY in the following format:
+
+Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
+
+Explanation:

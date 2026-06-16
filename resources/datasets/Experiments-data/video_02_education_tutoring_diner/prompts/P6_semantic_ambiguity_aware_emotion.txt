@@ -12,8 +12,15 @@ Use ONLY:
 Do NOT infer hidden intentions, unstated emotions, or external context beyond the provided scenario.
 
 Video Scenario:
-A hidden camera social experiment in a public diner shows a tutor becoming verbally harsh toward a struggling
-child while nearby children react by offering empathy, emotional support, encouragement, and academic help.
+Title: Children Respond to a Harsh Tutor in a Hidden Camera Social Experiment
+
+Scenario Summary: A hidden camera social experiment takes place in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude, impatient, and verbally harsh. The situation is designed to observe how nearby children react to unfair treatment and emotional distress in an educational setting.
+
+Several children initially hesitate but eventually step in to help the struggling student. Their responses include offering academic assistance, emotional encouragement, reassurance, empathy, and confidence-building support.
+
+The experiment highlights empathy among children, reactions to bullying behaviour, emotional support in learning environments, fairness and kindness, confidence and encouragement, and standing up for someone being mistreated.
+
+Important contextual themes: hidden camera social experiment; diner environment; struggling student; verbally aggressive tutor; peer empathy; emotional encouragement; educational bullying; confidence building; children helping strangers; social responsibility; emotional support; kindness in public spaces.
 
 Predefined non-clinical emotional state labels:
 • Shock
