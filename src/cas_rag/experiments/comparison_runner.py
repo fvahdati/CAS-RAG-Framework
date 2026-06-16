@@ -3,16 +3,33 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
 from sklearn.metrics import accuracy_score, classification_report, f1_score, precision_score, recall_score
 
 from cas_rag.config.settings import get_settings
-from cas_rag.core.enums import AlgorithmId, EmotionLabel, PipelineStatus, SemanticCategory
+from cas_rag.core.enums import AlgorithmId, EmotionLabel, PipelineStatus
 from cas_rag.core.models import CommentInput, HumanReviewDecision, PipelineResult
+from cas_rag.experiments.llm_columns import (
+    emotion_label_column,
+    filter_base_dataframe_columns,
+    provider_column_suffix,
+)
+from cas_rag.llm.validation import validate_llm_provider
 from cas_rag.orchestration.engine import PipelineEngine
 from cas_rag.subsystems.human_verification import HumanVerificationService
+
+DEFAULT_MULTI_LLM_PROVIDERS = ("openai", "gemini")
+
+ALGORITHMS = [
+    (AlgorithmId.ALGORITHM_1, "Alg1"),
+    (AlgorithmId.ALGORITHM_2, "Alg2"),
+    (AlgorithmId.ALGORITHM_3, "Alg3"),
+    (AlgorithmId.ALGORITHM_4, "Alg4"),
+    (AlgorithmId.CAS_RAG, "CAS-RAG"),
+]
 
 
 def load_experiment_comments(path: Path) -> tuple[pd.DataFrame, list[CommentInput]]:
@@ -56,19 +73,24 @@ def _norm_category(value: str | None) -> str:
     return s
 
 
+def _extract_emotion_label_text(text: str) -> str:
+    match = re.search(r"emotion\s*label\s*:\s*([^\n]+)", text, re.I)
+    if match:
+        return match.group(1).strip()
+    return ""
+
+
 def _result_label(result: PipelineResult) -> str:
     if result.status == PipelineStatus.DISCARDED:
         return "DISCARDED"
     if result.pending_human:
         return "PENDING_HUMAN"
+    if result.explanation:
+        label_text = _extract_emotion_label_text(result.explanation)
+        if label_text:
+            return label_text
     if result.emotion_label:
         return result.emotion_label.value
-    return ""
-
-
-def _semantic_label(result: PipelineResult) -> str:
-    if result.semantic_category:
-        return _norm_category(result.semantic_category.value)
     return ""
 
 
@@ -148,15 +170,42 @@ def compute_routing_kpi(y_true: list[str], y_pred: list[str]) -> dict:
     }
 
 
+def _resolve_llm_providers(
+    llm_provider: str | None,
+    llm_providers: list[str] | None,
+) -> list[str]:
+    if llm_providers:
+        return llm_providers
+    if llm_provider:
+        return [llm_provider]
+    return list(DEFAULT_MULTI_LLM_PROVIDERS)
+
+
+def _prepare_output_frame(df: pd.DataFrame) -> pd.DataFrame:
+    keep = filter_base_dataframe_columns(list(df.columns))
+    return df[keep].copy()
+
+
+def _reset_human_queue(settings) -> Path:
+    human_queue_path = settings.project_root / "data" / "human_verification_batch_run.json"
+    human_queue_path.write_text(json.dumps({"pending": [], "completed": []}), encoding="utf-8")
+    return human_queue_path
+
+
 def run_five_algorithm_comparison(
     input_path: Path,
     output_path: Path,
     video_slug: str = "video_02_education_tutoring_diner",
     llm_provider: str | None = None,
+    llm_providers: list[str] | None = None,
     include_kpi: bool = False,
 ) -> Path:
     settings = get_settings()
     df, comments = load_experiment_comments(input_path)
+    providers = _resolve_llm_providers(llm_provider, llm_providers)
+
+    for provider in providers:
+        validate_llm_provider(settings, provider)
 
     gold_col = "expected_category" if "expected_category" in df.columns else None
     expected_by_comment = {}
@@ -165,91 +214,51 @@ def run_five_algorithm_comparison(
             cid = str(row["comment_id"])
             expected_by_comment[cid] = _norm_category(row[gold_col])
 
-    human_queue_path = settings.project_root / "data" / "human_verification_batch_run.json"
-    human_queue_path.write_text(json.dumps({"pending": [], "completed": []}), encoding="utf-8")
+    out = _prepare_output_frame(df)
+    all_results: dict[str, dict[str, list[PipelineResult]]] = {
+        provider_column_suffix(p): {} for p in providers
+    }
 
-    algorithms = [
-        (AlgorithmId.ALGORITHM_1, "Alg1"),
-        (AlgorithmId.ALGORITHM_2, "Alg2"),
-        (AlgorithmId.ALGORITHM_3, "Alg3"),
-        (AlgorithmId.ALGORITHM_4, "Alg4"),
-        (AlgorithmId.CAS_RAG, "CAS-RAG"),
-    ]
-
-    all_results: dict[str, list[PipelineResult]] = {}
-    for alg_id, short in algorithms:
-        all_results[short] = run_algorithm_pass(
-            alg_id,
-            comments,
-            video_slug=video_slug,
-            human_queue_path=human_queue_path,
-            llm_provider=llm_provider,
-            expected_by_comment=expected_by_comment,
-        )
-
-    # Build comparison dataframe
-    out = df.copy()
-    text_col = "comment_text" if "comment_text" in out.columns else "comment"
-
-    for short, results in all_results.items():
-        out[f"{short}_emotion_label"] = [_result_label(r) for r in results]
-        out[f"{short}_status"] = [r.status.value for r in results]
-        out[f"{short}_rag_used"] = [r.rag_used for r in results]
-        if short == "CAS-RAG":
-            out[f"{short}_semantic_category"] = [_semantic_label(r) for r in results]
-            if gold_col:
-                out[f"{short}_routing_correct"] = [
-                    _norm_category(r.semantic_category.value if r.semantic_category else None)
-                    == expected_by_comment.get(str(cid), "")
-                    for r, cid in zip(results, out["comment_id"].astype(str))
-                ]
+    for provider in providers:
+        provider_key = provider_column_suffix(provider)
+        human_queue_path = _reset_human_queue(settings)
+        for alg_id, short in ALGORITHMS:
+            results = run_algorithm_pass(
+                alg_id,
+                comments,
+                video_slug=video_slug,
+                human_queue_path=human_queue_path,
+                llm_provider=provider,
+                expected_by_comment=expected_by_comment,
+            )
+            all_results[provider_key][short] = results
+            col = emotion_label_column(short, provider)
+            out[col] = [_result_label(r) for r in results]
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
         out.to_excel(writer, sheet_name="Comparison", index=False)
         if include_kpi:
             kpi_rows = []
-            if gold_col:
-                y_true = [_norm_category(v) for v in out[gold_col]]
-                cas_sem = out.get("CAS-RAG_semantic_category", pd.Series([""] * len(out))).tolist()
-                mask = [bool(t) and bool(p) for t, p in zip(y_true, cas_sem)]
-                if any(mask):
-                    yt = [y_true[i] for i in range(len(y_true)) if mask[i]]
-                    yp = [cas_sem[i] for i in range(len(cas_sem)) if mask[i]]
-                    m = compute_routing_kpi(yt, yp)
+            for provider in providers:
+                provider_key = provider_column_suffix(provider)
+                for short, results in all_results[provider_key].items():
                     kpi_rows.append(
                         {
-                            "metric_group": "CAS-RAG Layer-1 routing vs expected_category",
-                            "algorithm": "CAS-RAG",
-                            "n": m["n"],
-                            "accuracy": m["accuracy"],
-                            "precision_macro": m["precision_macro"],
-                            "recall_macro": m["recall_macro"],
-                            "f1_macro": m["f1_macro"],
-                        }
-                    )
-            for short, results in all_results.items():
-                kpi_rows.append(
-                    {
-                        "metric_group": "Pipeline execution",
-                        "algorithm": short,
-                        "n": len(results),
-                        "labelled": sum(1 for r in results if r.status == PipelineStatus.SUCCESS),
-                        "discarded": sum(1 for r in results if r.status == PipelineStatus.DISCARDED),
-                        "pending_human": sum(1 for r in results if r.pending_human),
-                        "rag_used_count": sum(1 for r in results if r.rag_used),
-                        "rag_used_pct": round(
-                            100 * sum(1 for r in results if r.rag_used) / len(results), 2
-                        ),
-                    }
-                )
-                if short == "CAS-RAG" and "CAS-RAG_routing_correct" in out.columns:
-                    kpi_rows.append(
-                        {
-                            "metric_group": "Routing accuracy",
+                            "metric_group": "Pipeline execution",
+                            "llm_provider": provider,
+                            "llm_column_suffix": provider_key,
                             "algorithm": short,
-                            "n": len(out),
-                            "accuracy": float(out["CAS-RAG_routing_correct"].mean()),
+                            "n": len(results),
+                            "labelled": sum(1 for r in results if r.status == PipelineStatus.SUCCESS),
+                            "discarded": sum(1 for r in results if r.status == PipelineStatus.DISCARDED),
+                            "pending_human": sum(1 for r in results if r.pending_human),
+                            "rag_used_count": sum(1 for r in results if r.rag_used),
+                            "rag_used_pct": round(
+                                100 * sum(1 for r in results if r.rag_used) / len(results), 2
+                            )
+                            if results
+                            else 0.0,
                         }
                     )
             pd.DataFrame(kpi_rows).to_excel(writer, sheet_name="KPI_Summary", index=False)

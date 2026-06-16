@@ -59,10 +59,16 @@ Examples of ambiguous comments:
 These comments may contain a positive reaction, but they do not provide enough contextual evidence to determine a reliable emotional interpretation related to the video scenario.
  
 Instructions:
+If a single label clearly explains the emotional reaction, return only that label.
+Only return a secondary label when:
+• two emotional categories are strongly supported by the comment,
+• neither category can be confidently preferred over the other based on the explicit evidence,
+• and both interpretations are reasonable according to the label definitions.
+Otherwise, return a single label.
+
 • Use only explicitly available evidence.
 • Do not assume missing context.
 • Focus only on non-clinical emotional reactions.
-• If multiple emotions appear, choose the dominant explicitly expressed emotion.
 • If the emotional meaning cannot be reliably interpreted, return “Ambiguous”.
 • If the emotional meaning is clear, classify the emotion using the predefined labels.
 • Provide a concise explanation for the result.

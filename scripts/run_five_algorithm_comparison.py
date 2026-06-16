@@ -28,7 +28,13 @@ def main():
     parser.add_argument(
         "--llm",
         default=None,
-        help="LLM provider override (default: CAS_RAG_LLM_PROVIDER from .env, usually openai)",
+        help="Run a single LLM provider (e.g. openai). Overrides --llms.",
+    )
+    parser.add_argument(
+        "--llms",
+        nargs="+",
+        default=None,
+        help="Run multiple LLM providers sequentially (default: openai gemini).",
     )
     parser.add_argument(
         "--kpi",
@@ -37,11 +43,19 @@ def main():
     )
     args = parser.parse_args()
 
+    llm_providers = None
+    llm_provider = None
+    if args.llm:
+        llm_provider = args.llm
+    else:
+        llm_providers = args.llms
+
     out = run_five_algorithm_comparison(
         Path(args.input),
         Path(args.output),
         video_slug=args.video_slug,
-        llm_provider=args.llm,
+        llm_provider=llm_provider,
+        llm_providers=llm_providers,
         include_kpi=args.kpi,
     )
     print(f"Wrote comparison workbook: {out}")

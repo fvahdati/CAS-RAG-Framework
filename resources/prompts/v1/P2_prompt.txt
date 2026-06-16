@@ -22,13 +22,18 @@ Frustration: A reaction expressing annoyance, disappointment, helplessness, or e
 Empathy: A reaction expressing compassion, emotional concern, support, kindness, or understanding toward others.
 None: Use this label when the comment's emotional reaction does not belong to any of the categories below: Shock, Disbelief, Anger, Frustration, Empathy. This label is included to avoid forcing the model to assign an emotional category when the ground emotional label is different from the above 5 labels.
 
-
 These comments may contain a positive reaction, but they do not provide enough contextual evidence to determine a reliable emotional interpretation related to the video scenario.
 Instructions:
+If a single label clearly explains the emotional reaction, return only that label.
+Only return a secondary label when:
+• two emotional categories are strongly supported by the comment,
+• neither category can be confidently preferred over the other based on the explicit evidence,
+• and both interpretations are reasonable according to the label definitions.
+Otherwise, return a single label.
+
 • Use only explicitly available evidence.
 • Do not assume missing context beyond the retrieved context.
 • Focus only on non-clinical emotional reactions.
-• If multiple emotions appear, choose the dominant explicitly expressed emotion.
 • Use the retrieved context to resolve unclear references or contextual ambiguity.
 • Provide a concise explanation for the classification result.
 Input Comment: {comment}
