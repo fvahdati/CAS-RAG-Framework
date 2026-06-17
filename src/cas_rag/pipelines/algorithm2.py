@@ -8,12 +8,13 @@ from cas_rag.pipelines.base import PipelineContext
 def run_algorithm2(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
     if ctx.spacy.needs_rag(inp.comment, ctx.scenario):
         tau = ctx.rag.retrieve(inp.comment)
-        label, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
+        label, secondary, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
         return PipelineResult(
             comment_id=inp.comment_id,
             algorithm=AlgorithmId.ALGORITHM_2,
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
+            secondary_emotion_label=secondary,
             rag_used=True,
             prompts_invoked=[PromptId.P2_RAG_EMOTION],
             retrieved_context=tau,
@@ -22,10 +23,12 @@ def run_algorithm2(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
         )
 
     prompts = [PromptId.P3_NO_RAG_EMOTION]
-    y, expl = ctx.no_rag.classify_p3(inp.comment, ctx.scenario)
+    y, secondary, expl = ctx.no_rag.classify_p3(inp.comment, ctx.scenario)
     if y == EmotionLabel.AMBIGUOUS:
         prompts.append(PromptId.P4_AMBIGUITY)
-        label, pending = ctx.ambiguity.classify_p4(inp.comment, ctx.scenario, inp.comment_id, "algorithm_2")
+        label, p4_secondary, pending, p4_expl = ctx.ambiguity.classify_p4(
+            inp.comment, ctx.scenario, inp.comment_id, "algorithm_2"
+        )
         if pending:
             return PipelineResult(
                 comment_id=inp.comment_id,
@@ -33,6 +36,7 @@ def run_algorithm2(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.PENDING_HUMAN,
                 pending_human=True,
                 prompts_invoked=prompts,
+                explanation=p4_expl,
                 trace=["spaCy no RAG; P3=Ambiguous -> P4=Ambiguous -> human verification"],
             )
         if label is None:
@@ -42,13 +46,17 @@ def run_algorithm2(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.DISCARDED,
                 emotion_label=EmotionLabel.DISCARDED,
                 prompts_invoked=prompts,
+                explanation=p4_expl,
             )
         y = label
+        secondary = p4_secondary
+        expl = p4_expl
     return PipelineResult(
         comment_id=inp.comment_id,
         algorithm=AlgorithmId.ALGORITHM_2,
         status=PipelineStatus.SUCCESS,
         emotion_label=y,
+        secondary_emotion_label=secondary,
         prompts_invoked=prompts,
         explanation=expl,
         trace=["spaCy no RAG -> P3"],

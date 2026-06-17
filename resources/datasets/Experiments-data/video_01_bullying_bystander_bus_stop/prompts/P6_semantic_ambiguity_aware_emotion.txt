@@ -13,7 +13,6 @@ Do NOT infer hidden intentions, unstated emotions, or external context beyond th
 
 Video Scenario:
 This staged social experiment takes place at a public bus stop where a teenage girl is sitting alone reading a book. Two individuals begin verbally bullying her, mocking her appearance, personality, and social life. The girl becomes visibly uncomfortable but does not respond. Initially, bystanders watch without intervening, but as the situation escalates, several people step in—some confront the bullies directly, while others support the victim by offering comfort and inclusion. The experiment highlights different types of bystander behavior and emphasizes the importance of standing up against bullying and supporting vulnerable individuals.
-
 Predefined non-clinical emotional state labels:
 • Shock
 • Disbelief
@@ -74,5 +73,7 @@ Input Comment:
 Respond ONLY in the following format:
 
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
+
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
 
 Explanation:

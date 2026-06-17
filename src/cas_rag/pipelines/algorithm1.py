@@ -11,12 +11,13 @@ def run_algorithm1(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
         prompts.append(PromptId.P1_UNKNOWN_REFERENCE)
         tau = ctx.rag.retrieve(inp.comment)
         prompts.append(PromptId.P2_RAG_EMOTION)
-        label, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
+        label, secondary, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
         return PipelineResult(
             comment_id=inp.comment_id,
             algorithm=AlgorithmId.ALGORITHM_1,
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
+            secondary_emotion_label=secondary,
             rag_used=True,
             prompts_invoked=prompts,
             retrieved_context=tau,
@@ -27,10 +28,12 @@ def run_algorithm1(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
     prompts.append(PromptId.P1_UNKNOWN_REFERENCE)
     trace.append("P1=No -> P3")
     prompts.append(PromptId.P3_NO_RAG_EMOTION)
-    y, expl = ctx.no_rag.classify_p3(inp.comment, ctx.scenario)
+    y, secondary, expl = ctx.no_rag.classify_p3(inp.comment, ctx.scenario)
     if y == EmotionLabel.AMBIGUOUS:
         prompts.append(PromptId.P4_AMBIGUITY)
-        label, pending = ctx.ambiguity.classify_p4(inp.comment, ctx.scenario, inp.comment_id, "algorithm_1")
+        label, p4_secondary, pending, p4_expl = ctx.ambiguity.classify_p4(
+            inp.comment, ctx.scenario, inp.comment_id, "algorithm_1"
+        )
         if pending:
             return PipelineResult(
                 comment_id=inp.comment_id,
@@ -38,6 +41,7 @@ def run_algorithm1(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.PENDING_HUMAN,
                 pending_human=True,
                 prompts_invoked=prompts,
+                explanation=p4_expl,
                 trace=trace + ["P3=Ambiguous -> P4=Ambiguous -> human verification"],
             )
         if label is None:
@@ -47,14 +51,18 @@ def run_algorithm1(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.DISCARDED,
                 emotion_label=EmotionLabel.DISCARDED,
                 prompts_invoked=prompts,
+                explanation=p4_expl,
                 trace=trace + ["discarded after human review"],
             )
         y = label
+        secondary = p4_secondary
+        expl = p4_expl
     return PipelineResult(
         comment_id=inp.comment_id,
         algorithm=AlgorithmId.ALGORITHM_1,
         status=PipelineStatus.SUCCESS,
         emotion_label=y,
+        secondary_emotion_label=secondary,
         prompts_invoked=prompts,
         explanation=expl,
         trace=trace,

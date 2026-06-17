@@ -13,7 +13,6 @@ Do NOT infer hidden intentions, unstated emotions, or external context beyond th
 
 Video Scenario:
 In this staged scenario, a teenager is confronted by his mother about drug use in a public setting. When the mother leaves temporarily, an adult actor intervenes and begins encouraging the teen to dismiss his mother's concerns, normalising drug use and even offering access to drugs. Hidden cameras capture how bystanders react—some remain passive due to uncertainty about interfering in parenting, while others step in to warn the mother or challenge the inappropriate influence. The experiment highlights peer pressure, normalization of risky behaviors, and the critical role of bystanders in protecting young individuals.
-
 Predefined non-clinical emotional state labels:
 • Shock
 • Disbelief
@@ -74,5 +73,7 @@ Input Comment:
 Respond ONLY in the following format:
 
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
+
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
 
 Explanation:

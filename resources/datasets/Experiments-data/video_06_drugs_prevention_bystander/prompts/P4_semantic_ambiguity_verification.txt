@@ -79,5 +79,6 @@ Input Comment:
 Respond ONLY in the following format:
  
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
- 
-Explanation: 
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
+
+Explanation:

@@ -13,7 +13,6 @@ Do NOT infer hidden intentions, unstated emotions, or external context beyond th
 
 Video Scenario:
 A top-performing high school student named Gabby conducts a bold social experiment by pretending to be pregnant for over six months. With only a few people aware of the truth, she convinces her classmates, teachers, and community that she is expecting a child. As the fake pregnancy progresses, she carefully documents how people's behavior toward her changes—friends distance themselves, teachers lower their expectations, and rumors spread. Despite her strong academic background and ambitions, she is reduced to a stereotype. At a school assembly, she reveals the truth, exposing how society unfairly judges and labels teenage mothers. Her project becomes a powerful statement about bias, perception, and social judgment.
-
 Predefined non-clinical emotional state labels:
 • Shock
 • Disbelief
@@ -74,5 +73,7 @@ Input Comment:
 Respond ONLY in the following format:
 
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
+
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
 
 Explanation:

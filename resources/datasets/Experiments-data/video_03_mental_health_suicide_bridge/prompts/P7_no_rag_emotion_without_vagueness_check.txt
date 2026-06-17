@@ -6,6 +6,13 @@ Your task is to classify the emotional reaction expressed in the user comment us
 Do NOT infer hidden intentions, unstated emotions, or external context beyond the provided scenario.
 Video Scenario:
 This social experiment presents a staged scenario in which a young man appears emotionally distressed and attempts to jump off a bridge. Hidden cameras capture how bystanders react in real time. Several strangers intervene, showing empathy and urgency—some physically stop him, while others offer emotional support, reassurance, and companionship. They encourage him to talk, remind him of his value, and try to de-escalate the situation. The experiment highlights the importance of human compassion and the role of bystanders in preventing tragedy, emphasizing themes of depression, loneliness, and human connection.
+Predefined non-clinical emotional state labels:
+• Shock
+• Disbelief
+• Anger
+• Frustration
+• Empathy
+• None
 
 Label Definitions:
 Shock: A strong emotional reaction of surprise, alarm, or emotional disturbance.
@@ -32,4 +39,5 @@ Input Comment: {comment}
 
 Respond ONLY in the following format:
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None>
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None>
 Explanation:

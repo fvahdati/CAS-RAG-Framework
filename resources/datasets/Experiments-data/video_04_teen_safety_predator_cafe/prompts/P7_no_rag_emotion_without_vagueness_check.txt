@@ -6,6 +6,13 @@ Your task is to classify the emotional reaction expressed in the user comment us
 Do NOT infer hidden intentions, unstated emotions, or external context beyond the provided scenario.
 Video Scenario:
 This social experiment shows a 15-year-old girl being approached by an older man who attempts to lure her into a private setting under the promise of helping her music career. The interaction unfolds in a public café, where hidden cameras record how bystanders react. Some people intervene, warning the girl and confronting the man, while others hesitate. The situation explores teenage vulnerability, manipulation tactics, and the importance of awareness and intervention. It highlights how emotional naivety, trust, and social pressure can place teenagers in risky situations, linking closely to mental and emotional well-being.
+Predefined non-clinical emotional state labels:
+• Shock
+• Disbelief
+• Anger
+• Frustration
+• Empathy
+• None
 
 Label Definitions:
 Shock: A strong emotional reaction of surprise, alarm, or emotional disturbance.
@@ -32,4 +39,5 @@ Input Comment: {comment}
 
 Respond ONLY in the following format:
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None>
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None>
 Explanation:

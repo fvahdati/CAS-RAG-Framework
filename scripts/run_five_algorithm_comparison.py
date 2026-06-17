@@ -41,6 +41,16 @@ def main():
         action="store_true",
         help="Include KPI_Summary sheet (after gold emotion labels are available)",
     )
+    parser.add_argument(
+        "--no-gemini-fallback",
+        action="store_true",
+        help="Do not fall back to Ollama when Gemini is unavailable.",
+    )
+    parser.add_argument(
+        "--gemini-fallback",
+        default="ollama",
+        help="Provider to use when Gemini probe fails (default: ollama).",
+    )
     args = parser.parse_args()
 
     llm_providers = None
@@ -57,6 +67,7 @@ def main():
         llm_provider=llm_provider,
         llm_providers=llm_providers,
         include_kpi=args.kpi,
+        gemini_fallback=None if args.no_gemini_fallback else args.gemini_fallback,
     )
     print(f"Wrote comparison workbook: {out}")
 

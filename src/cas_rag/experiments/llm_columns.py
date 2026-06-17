@@ -40,13 +40,40 @@ def emotion_label_column(algorithm_short: str, provider: str) -> str:
     return f"{algorithm_short}_emotion_label_{provider_column_suffix(provider)}"
 
 
+def secondary_emotion_label_column(algorithm_short: str, provider: str) -> str:
+    return f"{algorithm_short}_secondary_emotion_label_{provider_column_suffix(provider)}"
+
+
+def rag_used_column(algorithm_short: str, provider: str) -> str:
+    return f"{algorithm_short}_rag_used_{provider_column_suffix(provider)}"
+
+
+def semantic_category_column(algorithm_short: str, provider: str) -> str:
+    return f"{algorithm_short}_semantic_category_{provider_column_suffix(provider)}"
+
+
+def routing_correct_column(algorithm_short: str, provider: str) -> str:
+    return f"{algorithm_short}_routing_correct_{provider_column_suffix(provider)}"
+
+
+_EXPORT_COLUMN_MARKERS = (
+    "_emotion_label_",
+    "_secondary_emotion_label_",
+    "_rag_used_",
+    "_semantic_category_",
+    "_routing_correct_",
+)
+
+
 def is_legacy_algorithm_output_column(column: str) -> bool:
     if column in DROP_EXACT_COLUMNS:
         return True
     if column.startswith("algorithm_"):
         return True
     if re.match(r"^(Alg\d|CAS-RAG)_", column):
-        return "_emotion_label_" not in column
+        if "_status" in column:
+            return True
+        return not any(marker in column for marker in _EXPORT_COLUMN_MARKERS)
     return False
 
 

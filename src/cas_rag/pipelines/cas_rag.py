@@ -10,12 +10,13 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
     trace = [f"semantic={category.value}", f"scores={scores}"]
 
     if category == SemanticCategory.EXPLICIT:
-        label, expl = ctx.no_rag.classify_p7(inp.comment, ctx.scenario)
+        label, secondary, expl = ctx.no_rag.classify_p7(inp.comment, ctx.scenario)
         return PipelineResult(
             comment_id=inp.comment_id,
             algorithm=AlgorithmId.CAS_RAG,
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
+            secondary_emotion_label=secondary,
             semantic_category=category,
             prompts_invoked=[PromptId.P7_NO_RAG_NO_VAGUE],
             explanation=expl,
@@ -23,7 +24,9 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
         )
 
     if category == SemanticCategory.AMBIGUOUS:
-        label, pending = ctx.ambiguity.classify_p6(inp.comment, ctx.scenario, inp.comment_id, "cas_rag")
+        label, secondary, pending, expl = ctx.ambiguity.classify_p6(
+            inp.comment, ctx.scenario, inp.comment_id, "cas_rag"
+        )
         if pending:
             return PipelineResult(
                 comment_id=inp.comment_id,
@@ -32,6 +35,7 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 semantic_category=category,
                 pending_human=True,
                 prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
+                explanation=expl,
                 trace=trace + ["Ambiguous -> P6=Ambiguous -> human verification"],
             )
         if label is None:
@@ -41,6 +45,7 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.DISCARDED,
                 emotion_label=EmotionLabel.DISCARDED,
                 semantic_category=category,
+                explanation=expl,
                 trace=trace + ["discarded"],
             )
         return PipelineResult(
@@ -48,8 +53,10 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             algorithm=AlgorithmId.CAS_RAG,
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
+            secondary_emotion_label=secondary,
             semantic_category=category,
             prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
+            explanation=expl,
             trace=trace + ["Ambiguous -> P6 clear"],
         )
 
@@ -58,12 +65,13 @@ def run_cas_rag(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
     resolvable = ctx.spacy.can_ground_with_script(inp.comment, ctx.scenario, script)
     if resolvable:
         tau = ctx.rag.retrieve(inp.comment)
-        label, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
+        label, secondary, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
         return PipelineResult(
             comment_id=inp.comment_id,
             algorithm=AlgorithmId.CAS_RAG,
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
+            secondary_emotion_label=secondary,
             semantic_category=category,
             rag_used=True,
             prompts_invoked=[PromptId.P2_RAG_EMOTION],

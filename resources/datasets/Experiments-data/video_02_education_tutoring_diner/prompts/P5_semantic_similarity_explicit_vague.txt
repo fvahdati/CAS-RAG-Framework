@@ -1,80 +1,25 @@
-Semantic Similarity Computation Prompt
-
-You are a semantic similarity computation system for non-clinical emotional reaction analysis in user comments
-related to short video scenarios.
-
-Your task is to determine whether the semantic meaning expressed in the user comment is more semantically
-aligned with:
-1. Explicit emotional reaction prototypes
-or
-2. Ambiguous emotional reaction prototypes
-
-Use ONLY:
-1. The explicitly available information in the comment.
-2. The provided video scenario.
-3. The provided context prototypes.
-
-Do NOT infer hidden intentions, unstated emotions, or external context beyond the provided scenario and prototypes.
+You are a semantic similarity computation system for non-clinical emotional reaction analysis.
 
 Video Scenario:
-A hidden camera social experiment in a public diner shows a tutor becoming verbally harsh toward
-a struggling child while nearby children react by offering empathy, emotional support, encouragement, and academic help.
+A hidden camera experiment is set up in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude and verbally harsh. The situation is designed to test how other children nearby will respond. Some hesitate at first, but several step in to help the struggling student, offering both academic support and emotional encouragement. The experiment reveals that even young children can recognise unfair treatment and act with empathy, highlighting the importance of kindness, confidence, and standing up against bullying behaviour in educational settings.
 
-Definitions:
+Explicit prototypes:
+  (1) "The way those kids jumped in proves empathy can beat a bad adult example every time."
+  (2) "This is exactly why kindness and confidence matter more than any worksheet."
+  (3) "Restores a little faith—kids noticing unfairness and refusing to shrug it off."
+  (4) "Great reminder that bullying in learning spaces is never okay, no matter the adult's excuse."
+  (5) "Wholesome watch; we need way more classrooms that normalise standing up for someone struggling."
 
-Explicit:
-A comment should be considered Explicit when the emotional meaning, emotional target, or emotional reaction
-is clearly and directly expressed and can be reliably interpreted from the comment and scenario context.
-
-Ambiguous: A comment should be considered Ambiguous when:
-• the emotional meaning is weak, mixed, generic, indirect, or unclear,
-• the emotional target is not identifiable,
-• the reaction is only loosely implied,
-• the comment focuses on uncertainty, production authenticity, editing concerns, or contextual doubt,
-• or the connection between the comment and the video scenario cannot be reliably established.
-Examples of Ambiguous comments: • "I love it" • "Amazing" • "Wow" • "So good"
-These comments may contain a positive reaction, but they do not provide enough contextual evidence to determine a reliable emotional interpretation related to the video scenario.
-Explicit Emotional Reaction Prototypes:
-
-1. "The way those kids jumped in proves empathy can beat a bad adult example every time."
-
-2. "This is exactly why kindness and confidence matter more than any worksheet."
-
-3. "Restores a little faith—kids noticing unfairness and refusing to shrug it off."
-
-4. "Great reminder that bullying in learning spaces is never okay, no matter the adult's excuse."
-
-5. "Wholesome watch; we need way more classrooms that normalise standing up for someone struggling."
-
-Ambiguous Emotional Reaction Prototypes:
-
-1. "Cute message but I'm still uneasy about hidden-camera setups in public places."
-
-2. "Mixed feelings—is this stitched like reality TV or genuinely spontaneous?"
-
-3. "Inspiring edits, though I wish we knew consent and editing context upfront."
-
-4. "Not sure the lesson needs a diner stunt; feels performative even if the vibe is sweet."
-
-5. "Hard to tell what's heartfelt vs what producers nudged; still liked the takeaway."
-
-Instructions:
-• Compare the semantic meaning of the input comment against the provided prototype categories.
-• Focus only on semantic similarity between the comment and the prototype groups.
-• Use only explicitly available evidence.
-• Do not assume missing context.
-• Do not classify specific emotions such as anger, empathy, or frustration.
-• If the comment is more semantically aligned with clear, direct, emotionally interpretable reactions similar
-to the Explicit prototypes, output "Explicit".
-• If the comment is more semantically aligned with uncertain, mixed, indirect, weak, or contextually unclear
-reactions similar to the Ambiguous prototypes, output "Ambiguous".
-• Provide a concise explanation for the result.
+Vague prototypes:
+  (1) "Cute message but I'm still uneasy about hidden-camera setups in public places."
+  (2) "Mixed feelings—is this stitched like reality TV or genuinely spontaneous?"
+  (3) "Inspiring edits, though I wish we knew consent and editing context upfront."
+  (4) "Not sure the lesson needs a diner stunt; feels performative even if the vibe is sweet."
+  (5) "Hard to tell what's heartfelt vs what producers nudged; still liked the takeaway."
 
 Input Comment:
 {comment}
 
-Respond ONLY in the following format:
-
-Semantic Similarity Label: <Explicit / Ambiguous>
-
+Respond ONLY:
+Semantic Similarity Label: <Explicit | Vague>
 Explanation:

@@ -9,7 +9,9 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
     sigma = ctx.semantic.classify_two_way(inp.comment)
 
     if sigma == "Ambiguous":
-        label, pending = ctx.ambiguity.classify_p6(inp.comment, ctx.scenario, inp.comment_id, "algorithm_4")
+        label, secondary, pending, expl = ctx.ambiguity.classify_p6(
+            inp.comment, ctx.scenario, inp.comment_id, "algorithm_4"
+        )
         if pending:
             return PipelineResult(
                 comment_id=inp.comment_id,
@@ -17,6 +19,7 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.PENDING_HUMAN,
                 pending_human=True,
                 prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
+                explanation=expl,
                 trace=["sigma=Ambiguous -> P6=Ambiguous -> human verification"],
             )
         if label is None:
@@ -26,25 +29,29 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 status=PipelineStatus.DISCARDED,
                 emotion_label=EmotionLabel.DISCARDED,
                 prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
+                explanation=expl,
             )
         return PipelineResult(
             comment_id=inp.comment_id,
             algorithm=AlgorithmId.ALGORITHM_4,
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
+            secondary_emotion_label=secondary,
             prompts_invoked=[PromptId.P6_AMBIGUITY_AWARE],
+            explanation=expl,
             trace=["sigma=Ambiguous -> P6 clear"],
         )
 
     # ROUTE_TO_RAG: explicit comments that need contextual grounding
     if "when " in inp.comment.lower() or "that " in inp.comment.lower():
         tau = ctx.rag.retrieve(inp.comment)
-        label, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
+        label, secondary, expl = ctx.rag_emotion.classify(inp.comment, ctx.scenario, tau)
         return PipelineResult(
             comment_id=inp.comment_id,
             algorithm=AlgorithmId.ALGORITHM_4,
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
+            secondary_emotion_label=secondary,
             rag_used=True,
             prompts_invoked=[PromptId.P2_RAG_EMOTION],
             retrieved_context=tau,
@@ -52,12 +59,13 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             trace=["sigma=Explicit, ROUTE_TO_RAG -> P2"],
         )
 
-    label, expl = ctx.no_rag.classify_p7(inp.comment, ctx.scenario)
+    label, secondary, expl = ctx.no_rag.classify_p7(inp.comment, ctx.scenario)
     return PipelineResult(
         comment_id=inp.comment_id,
         algorithm=AlgorithmId.ALGORITHM_4,
         status=PipelineStatus.SUCCESS,
         emotion_label=label,
+        secondary_emotion_label=secondary,
         prompts_invoked=[PromptId.P7_NO_RAG_NO_VAGUE],
         explanation=expl,
         trace=["sigma=Explicit -> P7"],

@@ -39,6 +39,7 @@ class PipelineResult(BaseModel):
     algorithm: AlgorithmId
     status: PipelineStatus
     emotion_label: EmotionLabel | None = None
+    secondary_emotion_label: EmotionLabel | None = None
     semantic_category: SemanticCategory | None = None
     rag_used: bool = False
     prompts_invoked: list[PromptId] = Field(default_factory=list)

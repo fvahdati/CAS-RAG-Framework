@@ -76,4 +76,6 @@ Respond ONLY in the following format:
 
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
 
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
+
 Explanation:

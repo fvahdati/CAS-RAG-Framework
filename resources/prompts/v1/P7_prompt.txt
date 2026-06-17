@@ -39,4 +39,5 @@ Input Comment: {comment}
 
 Respond ONLY in the following format:
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None>
+Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None>
 Explanation:

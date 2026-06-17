@@ -16,7 +16,12 @@ from cas_rag.experiments.llm_columns import (
     emotion_label_column,
     filter_base_dataframe_columns,
     provider_column_suffix,
+    rag_used_column,
+    routing_correct_column,
+    secondary_emotion_label_column,
+    semantic_category_column,
 )
+from cas_rag.llm.probe import resolve_providers_with_gemini_fallback
 from cas_rag.llm.validation import validate_llm_provider
 from cas_rag.orchestration.engine import PipelineEngine
 from cas_rag.subsystems.human_verification import HumanVerificationService
@@ -85,12 +90,32 @@ def _result_label(result: PipelineResult) -> str:
         return "DISCARDED"
     if result.pending_human:
         return "PENDING_HUMAN"
+    if result.emotion_label:
+        return result.emotion_label.value
     if result.explanation:
         label_text = _extract_emotion_label_text(result.explanation)
         if label_text:
-            return label_text
-    if result.emotion_label:
-        return result.emotion_label.value
+            return label_text.split("/")[0].strip()
+    return ""
+
+
+def _result_secondary_label(result: PipelineResult) -> str:
+    if result.status in (PipelineStatus.DISCARDED,) or result.pending_human:
+        return ""
+    if result.secondary_emotion_label:
+        return result.secondary_emotion_label.value
+    if result.explanation:
+        from cas_rag.llm.parser import parse_emotion_labels
+
+        _, secondary = parse_emotion_labels(result.explanation)
+        if secondary:
+            return secondary.value
+    return ""
+
+
+def _semantic_label(result: PipelineResult) -> str:
+    if result.semantic_category:
+        return _norm_category(result.semantic_category.value)
     return ""
 
 
@@ -173,12 +198,33 @@ def compute_routing_kpi(y_true: list[str], y_pred: list[str]) -> dict:
 def _resolve_llm_providers(
     llm_provider: str | None,
     llm_providers: list[str] | None,
+    *,
+    gemini_fallback: str | None = "ollama",
 ) -> list[str]:
     if llm_providers:
-        return llm_providers
-    if llm_provider:
-        return [llm_provider]
-    return list(DEFAULT_MULTI_LLM_PROVIDERS)
+        requested = llm_providers
+    elif llm_provider:
+        requested = [llm_provider]
+    else:
+        requested = list(DEFAULT_MULTI_LLM_PROVIDERS)
+
+    if gemini_fallback and "gemini" in [_normalize_provider_name(p) for p in requested]:
+        resolved, messages = resolve_providers_with_gemini_fallback(
+            requested,
+            fallback=gemini_fallback,
+            settings=get_settings(),
+        )
+        for msg in messages:
+            print(msg)
+        return resolved
+    return requested
+
+
+def _normalize_provider_name(provider: str) -> str:
+    name = provider.lower().strip()
+    if name in ("llama", "meta"):
+        return "ollama"
+    return name
 
 
 def _prepare_output_frame(df: pd.DataFrame) -> pd.DataFrame:
@@ -199,10 +245,16 @@ def run_five_algorithm_comparison(
     llm_provider: str | None = None,
     llm_providers: list[str] | None = None,
     include_kpi: bool = False,
+    gemini_fallback: str | None = "ollama",
 ) -> Path:
     settings = get_settings()
     df, comments = load_experiment_comments(input_path)
-    providers = _resolve_llm_providers(llm_provider, llm_providers)
+    providers = _resolve_llm_providers(
+        llm_provider,
+        llm_providers,
+        gemini_fallback=gemini_fallback,
+    )
+    print("LLM providers for this run:", ", ".join(providers))
 
     for provider in providers:
         validate_llm_provider(settings, provider)
@@ -234,12 +286,52 @@ def run_five_algorithm_comparison(
             all_results[provider_key][short] = results
             col = emotion_label_column(short, provider)
             out[col] = [_result_label(r) for r in results]
+            sec_col = secondary_emotion_label_column(short, provider)
+            out[sec_col] = [_result_secondary_label(r) for r in results]
+            rag_col = rag_used_column(short, provider)
+            out[rag_col] = [r.rag_used for r in results]
+            if short == "CAS-RAG":
+                sem_col = semantic_category_column(short, provider)
+                out[sem_col] = [_semantic_label(r) for r in results]
+                if gold_col:
+                    route_col = routing_correct_column(short, provider)
+                    out[route_col] = [
+                        _norm_category(r.semantic_category.value if r.semantic_category else None)
+                        == expected_by_comment.get(str(cid), "")
+                        for r, cid in zip(results, out["comment_id"].astype(str))
+                    ]
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
         out.to_excel(writer, sheet_name="Comparison", index=False)
         if include_kpi:
             kpi_rows = []
+            if gold_col:
+                for provider in providers:
+                    provider_key = provider_column_suffix(provider)
+                    sem_col = semantic_category_column("CAS-RAG", provider)
+                    if sem_col not in out.columns:
+                        continue
+                    y_true = [_norm_category(v) for v in out[gold_col]]
+                    cas_sem = out[sem_col].tolist()
+                    mask = [bool(t) and bool(p) for t, p in zip(y_true, cas_sem)]
+                    if any(mask):
+                        yt = [y_true[i] for i in range(len(y_true)) if mask[i]]
+                        yp = [cas_sem[i] for i in range(len(cas_sem)) if mask[i]]
+                        m = compute_routing_kpi(yt, yp)
+                        kpi_rows.append(
+                            {
+                                "metric_group": "CAS-RAG Layer-1 routing vs expected_category",
+                                "llm_provider": provider,
+                                "llm_column_suffix": provider_key,
+                                "algorithm": "CAS-RAG",
+                                "n": m["n"],
+                                "accuracy": m["accuracy"],
+                                "precision_macro": m["precision_macro"],
+                                "recall_macro": m["recall_macro"],
+                                "f1_macro": m["f1_macro"],
+                            }
+                        )
             for provider in providers:
                 provider_key = provider_column_suffix(provider)
                 for short, results in all_results[provider_key].items():
@@ -261,6 +353,19 @@ def run_five_algorithm_comparison(
                             else 0.0,
                         }
                     )
+                    if short == "CAS-RAG":
+                        route_col = routing_correct_column(short, provider)
+                        if route_col in out.columns:
+                            kpi_rows.append(
+                                {
+                                    "metric_group": "Routing accuracy",
+                                    "llm_provider": provider,
+                                    "llm_column_suffix": provider_key,
+                                    "algorithm": short,
+                                    "n": len(out),
+                                    "accuracy": float(out[route_col].mean()),
+                                }
+                            )
             pd.DataFrame(kpi_rows).to_excel(writer, sheet_name="KPI_Summary", index=False)
 
     return output_path
