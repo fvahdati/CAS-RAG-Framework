@@ -14,7 +14,7 @@ def engine(tmp_path: Path) -> SemanticSimilarityEngine:
     prototypes = {
         "explicit": ["Those kids were so sweet and brave to help."],
         "ambiguous": ["Wow just wow.", "Love this video."],
-        "context_dependent": ["When Harper walked over I melted."],
+        "context_dependent": ["When that specific moment happened, the reaction changed."],
     }
     path = tmp_path / "prototypes_semantic.json"
     path.write_text(json.dumps(prototypes), encoding="utf-8")
@@ -27,7 +27,9 @@ def test_generic_comment_routes_ambiguous(engine: SemanticSimilarityEngine):
 
 
 def test_context_cue_routes_context_dependent(engine: SemanticSimilarityEngine):
-    category, _, _ = engine.classify_three_way("When Harper walked over I melted")
+    category, _, _ = engine.classify_three_way(
+        "When that specific moment happened, the reaction changed."
+    )
     assert category == SemanticCategory.CONTEXT_DEPENDENT
 
 
