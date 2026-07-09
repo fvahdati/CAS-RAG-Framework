@@ -1,18 +1,19 @@
-You are a verification system designed to verify the user non-clinical emotional reactions comments related to social experiment short video scenarios is vague or not.
- 
- 
+You are a verification system for non-clinical emotional reactions in user comments on a social experiment video.
+
 Your task is to:
 1. Determine whether the emotional meaning expressed in the user comment is clear or ambiguous.
 2. If the emotional meaning is clear, classify the dominant emotional reaction using the predefined labels below.
- 
+
 Use ONLY:
 1. The explicitly available information in the comment.
 2. The provided video scenario.
- 
+3. Emotion reaction to based on the what user saw in the social experiment video. 
+
 Do NOT infer hidden intentions, unstated emotions, or external context beyond the provided scenario.
- 
+
 Video Scenario:
-A hidden camera experiment is set up in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude and verbally harsh. The situation is designed to test how other children nearby will respond. Some hesitate at first, but several step in to help the struggling student, offering both academic support and emotional encouragement. The experiment reveals that even young children can recognise unfair treatment and act with empathy, highlighting the importance of kindness, confidence, and standing up against bullying behaviour in educational settings.
+A hidden camera experiment is set up in a public diner where a child actor struggles with basic math while a tutor becomes increasingly rude and verbally harsh. Nearby children step in to help the struggling student with academic support and emotional encouragement.
+
 Predefined non-clinical emotional state labels:
 • Shock
 • Disbelief
@@ -20,45 +21,42 @@ Predefined non-clinical emotional state labels:
 • Frustration
 • Empathy
 • None
- 
-Label Definitions:
- 
-Shock:
-A strong emotional reaction of surprise, alarm, or emotional disturbance.
- 
-Disbelief:
-A reaction expressing difficulty accepting, believing, or trusting what is happening.
- 
-Anger:
-A reaction expressing irritation, outrage, hostility, or moral condemnation.
- 
-Frustration:
-A reaction expressing annoyance, disappointment, helplessness, or emotional dissatisfaction.
- 
-Empathy:
-A reaction expressing compassion, emotional concern, support, kindness, or understanding toward others.
- 
-None:
-Use this label when the comment’s emotional reaction does not belong to any of the categories below:
-Shock, Disbelief, Anger, Frustration, Empathy.
- 
-This label is included to avoid forcing the model to assign an emotional category when no meaningful emotion is explicitly expressed.
- 
-A comment should be considered Ambiguous when:
-• the emotional meaning is unclear,
-• the emotional target is unclear,
-• the comment is too generic or weakly expressed,
-• or the connection between the comment and the video scenario cannot be reliably established.
- 
-Examples of ambiguous comments:
-• “I love it”
-• “Amazing”
-• “Wow”
-• “So good”
- 
-These comments may contain a positive reaction, but they do not provide enough contextual evidence to determine a reliable emotional interpretation related to the video scenario.
- 
+• Ambiguous
+
+Label Definitions (video-anchored):
+Classify the dominant reaction a viewer expresses after watching this tutoring experiment.
+
+Shock: Surprise or emotional disturbance at what happened in the video.
+Example: "I can't believe he humiliated that child over basic math."
+
+Disbelief: Difficulty accepting that the tutor's behavior or the setup is real.
+Example: "No way a real tutor would talk to a kid like that."
+
+Anger: Moral outrage at unfair treatment shown in the video.
+Example: "That tutor should be fired for tearing down a struggling student."
+
+Frustration: Annoyance, helplessness, or emotional dissatisfaction as the dominant reaction.
+Example: "Watching a kid get torn down like that is so frustrating."
+
+Empathy: Compassion, support, or admiration for the struggling child or the children who helped.
+Example: "Those kids were so sweet to step in and help her."
+
+None: Neutral factual comments, jokes without clear emotion, or reactions outside the five emotion categories.
+Example: "WWYD always films in diners."
+
+Ambiguous: Use when the emotional meaning is weak, generic, or cannot be reliably linked to the video scenario.
+Examples: "I love it", "Amazing", "Wow", "So good"
+
+Empathy vs Frustration (important):
+• Choose Empathy when the comment praises the helping children or expresses compassion toward the struggling child — even if they mention harsh treatment hypothetically.
+
 Instructions:
+• Use only explicitly available evidence.
+• Do not assume missing context.
+• Focus only on non-clinical emotional reactions.
+• If the emotional meaning cannot be reliably interpreted, return "Ambiguous".
+• If the emotional meaning is clear, classify the emotion using the predefined labels.
+• Provide a concise explanation for the result.
 If a single label clearly explains the emotional reaction, return only that label.
 Only return a secondary label when:
 • two emotional categories are strongly supported by the comment,
@@ -66,18 +64,11 @@ Only return a secondary label when:
 • and both interpretations are reasonable according to the label definitions.
 Otherwise, return a single label.
 
-• Use only explicitly available evidence.
-• Do not assume missing context.
-• Focus only on non-clinical emotional reactions.
-• If the emotional meaning cannot be reliably interpreted, return “Ambiguous”.
-• If the emotional meaning is clear, classify the emotion using the predefined labels.
-• Provide a concise explanation for the result.
- 
 Input Comment:
 {comment}
- 
+
 Respond ONLY in the following format:
- 
+
 Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
 Secondary Emotion Label: <Shock / Disbelief / Anger / Frustration / Empathy / None / Ambiguous>
 

@@ -1,4 +1,8 @@
-Scene 1: A tutor sits with a child struggling with math at a diner booth. The tutor becomes verbally harsh.
-Scene 2: Nearby children notice the unfair treatment. One child offers help with homework.
-Scene 3: Harper approaches with encouragement. A child says everybody can be a hero when you stand up for someone.
-Scene 4: A waitress observes the hidden-camera setup. The experiment tests bystander empathy in public settings.
+# Shared tutoring-diner script corpus (video_02, YouTube lqevHrpvAx8)
+# See video_02_education_tutoring_diner/script_corpus.txt for the full transcript chunks.
+
+Scene 1: A tutor sits with a child struggling with math at Tick Tock Diner in Clifton, New Jersey. The tutor becomes verbally harsh and impatient.
+Scene 2: Nearby children notice the unfair treatment. Harper, age 8, helps the struggling student with a math problem using finger counting.
+Scene 3: The student says his tutor makes him feel stupid. Harper and other children offer encouragement, academic help, and emotional support.
+Scene 4: Alex and Juliet teach confidence and practice. Aubrey helps a crying student and shares Girl Scout tutoring experience.
+Scene 5: Children tell the student that struggling with math does not mean failure in life. John Quiñones reveals the hidden-camera experiment.

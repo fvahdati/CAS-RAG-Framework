@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import uuid
-from datetime import datetime
+from cas_rag.core.datetime_utils import utc_now_iso
 from pathlib import Path
 
 from cas_rag.config.settings import get_settings
@@ -47,7 +47,7 @@ class HumanVerificationService:
                 "reason": reason,
                 "algorithm": algorithm,
                 "context": context or {},
-                "created_at": datetime.utcnow().isoformat(),
+                "created_at": utc_now_iso(),
             }
         )
         self._save(data)

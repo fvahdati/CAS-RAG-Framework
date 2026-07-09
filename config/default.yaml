@@ -30,8 +30,9 @@ retrieval:
   chunk_size: 400
 
 semantic:
-  margin_explicit_vague: 0.12
-  band_explicit_vague: 0.08
+  margin_explicit_ambiguous: 0.10
+  margin_explicit_vague: 0.10
+  llm_arbitration_on_borderline: true
 
 spacy:
   model: en_core_web_sm

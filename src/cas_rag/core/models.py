@@ -5,6 +5,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
+from cas_rag.core.datetime_utils import utc_now
+
 from pydantic import BaseModel, Field
 
 from cas_rag.core.enums import (
@@ -30,7 +32,7 @@ class HumanReviewDecision(BaseModel):
     resolvable: bool = False
     assigned_label: EmotionLabel | None = None
     reviewer_id: str = "reviewer"
-    reviewed_at: datetime = Field(default_factory=datetime.utcnow)
+    reviewed_at: datetime = Field(default_factory=utc_now)
     notes: str = ""
 
 

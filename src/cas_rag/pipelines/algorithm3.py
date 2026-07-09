@@ -1,6 +1,6 @@
 """Algorithm 3: spaCy + Semantic Similarity Pipeline."""
 
-from cas_rag.core.enums import AlgorithmId, EmotionLabel, PipelineStatus, PromptId
+from cas_rag.core.enums import AlgorithmId, EmotionLabel, PipelineStatus, PromptId, SemanticCategory
 from cas_rag.core.models import CommentInput, PipelineResult
 from cas_rag.pipelines.base import PipelineContext
 
@@ -10,9 +10,14 @@ def _route_rag(sigma: str, needs_spacy: bool) -> bool:
 
 
 def run_algorithm3(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
-    sigma = ctx.semantic.classify_two_way(inp.comment)
+    category, scores, borderline = ctx.semantic.classify_three_way(inp.comment)
+    prompts: list[PromptId] = []
+    if borderline:
+        sigma = ctx.semantic_llm.classify(inp.comment, ctx.scenario)
+        prompts.append(PromptId.P5_SEMANTIC_SIMILARITY)
+    else:
+        sigma = "Ambiguous" if category == SemanticCategory.AMBIGUOUS else "Explicit"
     needs = ctx.spacy.needs_rag(inp.comment, ctx.scenario)
-    prompts = [PromptId.P5_SEMANTIC_SIMILARITY]
 
     if _route_rag(sigma, needs):
         tau = ctx.rag.retrieve(inp.comment)

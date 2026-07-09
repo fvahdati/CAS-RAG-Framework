@@ -1,8 +1,9 @@
 """Batch experiment runner for algorithm comparison."""
 
 import json
-from datetime import datetime
 from pathlib import Path
+
+from cas_rag.core.datetime_utils import utc_now
 
 from cas_rag.config.settings import get_settings
 from cas_rag.core.enums import AlgorithmId
@@ -24,7 +25,7 @@ class ExperimentRunner:
         comments = loader.load_comments(dataset_path)
         gold = {c.comment_id: c.gold_label.value for c in comments if c.gold_label}
         kpi = KPIProcessor().compute(results, gold)
-        stamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        stamp = utc_now().strftime("%Y%m%d_%H%M%S")
         out = self.output_dir / f"{algorithm.value}_{stamp}.json"
         payload = {
             "algorithm": algorithm.value,
@@ -39,6 +40,6 @@ class ExperimentRunner:
         for alg in AlgorithmId:
             path = self.run(alg, dataset_path)
             summary[alg.value] = json.loads(path.read_text())["kpi"]
-        out = self.output_dir / f"comparison_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+        out = self.output_dir / f"comparison_{utc_now().strftime('%Y%m%d_%H%M%S')}.json"
         out.write_text(json.dumps(summary, indent=2))
         return out
