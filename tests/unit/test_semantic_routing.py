@@ -44,3 +44,10 @@ def test_explicit_comment_routes_explicit(engine: SemanticSimilarityEngine):
         "Those kids were so sweet and brave to help that struggling student."
     )
     assert category == SemanticCategory.EXPLICIT
+
+
+def test_substantive_explicit_not_marked_generic(engine: SemanticSimilarityEngine):
+    category, _, _ = engine.classify_three_way(
+        "Parents raised those kids right with that kindness toward someone being bullied."
+    )
+    assert category == SemanticCategory.EXPLICIT

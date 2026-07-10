@@ -5,6 +5,10 @@ from __future__ import annotations
 import re
 
 PRONOUNS = {"this", "that", "it", "they", "he", "she", "him", "her", "them"}
+_RESOLVED_DEMONSTRATIVE = re.compile(
+    r"\b(this|that|these|those)\s+(kid|kids|student|tutor|mom|mother|girl|boy|waitress|part|moment|scene|line)\b",
+    re.I,
+)
 
 
 class SpacyLinguisticAnalyzer:
@@ -23,6 +27,8 @@ class SpacyLinguisticAnalyzer:
 
     def needs_rag(self, comment: str, scenario: str) -> bool:
         """Algorithm 2/3: unresolved person-like reference."""
+        if _RESOLVED_DEMONSTRATIVE.search(comment) and len(re.findall(r"[a-z']+", comment.lower())) > 6:
+            return False
         self._ensure_nlp()
         if self._nlp is None:
             return bool(re.search(r"\b(she|he|they|it|that|this)\b", comment, re.I))

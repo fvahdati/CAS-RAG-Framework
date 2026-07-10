@@ -81,6 +81,26 @@ _OFF_TOPIC_ANALOGY_CUES = (
     "at their wedding",
 )
 
+_EXPLICIT_TOPIC_CUES = (
+    "kids",
+    "kid",
+    "tutor",
+    "bullying",
+    "kindness",
+    "empathy",
+    "parents",
+    "struggling student",
+    "classroom",
+    "help that",
+    "stood up",
+    "faith",
+)
+
+
+def _has_explicit_topic(comment: str) -> bool:
+    lower = comment.lower()
+    return any(cue in lower for cue in _EXPLICIT_TOPIC_CUES)
+
 
 class SemanticSimilarityEngine:
     """Embedding-based three-way or two-way prototype classification."""
@@ -147,6 +167,8 @@ class SemanticSimilarityEngine:
     def _is_low_information_comment(self, comment: str) -> bool:
         lower = comment.lower().strip()
         tokens = re.findall(r"[a-z']+", lower)
+        if len(tokens) > 8 and _has_explicit_topic(comment):
+            return False
         has_generic_token = any(t in _GENERIC_TOKENS for t in tokens)
         has_uncertainty = any(cue in lower for cue in _UNCERTAINTY_CUES)
         if len(tokens) <= 4 and (has_generic_token or has_uncertainty):
@@ -244,6 +266,10 @@ class SemanticSimilarityEngine:
         if self._is_off_topic_reference(comment):
             adjusted["ambiguous"] = max(adjusted.get("ambiguous", 0.0), 0.84)
             adjusted["explicit"] = min(adjusted.get("explicit", 0.0), 0.45)
+
+        if _has_explicit_topic(comment) and not self._looks_generic(comment):
+            adjusted["explicit"] = max(adjusted.get("explicit", 0.0), 0.82)
+            adjusted["ambiguous"] = min(adjusted.get("ambiguous", 0.0), 0.40)
 
         return adjusted
 

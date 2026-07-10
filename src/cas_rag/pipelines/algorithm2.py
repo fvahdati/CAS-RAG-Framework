@@ -1,6 +1,6 @@
 """Algorithm 2: spaCy–LLM Pipeline."""
 
-from cas_rag.core.enums import AlgorithmId, EmotionLabel, PipelineStatus, PromptId
+from cas_rag.core.enums import AlgorithmId, EmotionLabel, PipelineStatus, PromptId, SemanticCategory
 from cas_rag.core.models import CommentInput, PipelineResult
 from cas_rag.pipelines.base import PipelineContext
 
@@ -15,6 +15,7 @@ def run_algorithm2(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             status=PipelineStatus.SUCCESS,
             emotion_label=label,
             secondary_emotion_label=secondary,
+            semantic_category=SemanticCategory.CONTEXT_DEPENDENT,
             rag_used=True,
             prompts_invoked=[PromptId.P2_RAG_EMOTION],
             retrieved_context=tau,
@@ -34,6 +35,7 @@ def run_algorithm2(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 comment_id=inp.comment_id,
                 algorithm=AlgorithmId.ALGORITHM_2,
                 status=PipelineStatus.PENDING_HUMAN,
+                semantic_category=SemanticCategory.AMBIGUOUS,
                 pending_human=True,
                 prompts_invoked=prompts,
                 explanation=p4_expl,
@@ -45,18 +47,21 @@ def run_algorithm2(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 algorithm=AlgorithmId.ALGORITHM_2,
                 status=PipelineStatus.DISCARDED,
                 emotion_label=EmotionLabel.DISCARDED,
+                semantic_category=SemanticCategory.AMBIGUOUS,
                 prompts_invoked=prompts,
                 explanation=p4_expl,
             )
         y = label
         secondary = p4_secondary
         expl = p4_expl
+    category = SemanticCategory.AMBIGUOUS if PromptId.P4_AMBIGUITY in prompts else SemanticCategory.EXPLICIT
     return PipelineResult(
         comment_id=inp.comment_id,
         algorithm=AlgorithmId.ALGORITHM_2,
         status=PipelineStatus.SUCCESS,
         emotion_label=y,
         secondary_emotion_label=secondary,
+        semantic_category=category,
         prompts_invoked=prompts,
         explanation=expl,
         trace=["spaCy no RAG -> P3"],
