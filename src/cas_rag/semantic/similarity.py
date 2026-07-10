@@ -26,6 +26,26 @@ _GENERIC_TOKENS = frozenset(
     {"wow", "amazing", "love", "cute", "sweet", "good", "nice", "great", "awesome", "lol", "wholesome"}
 )
 
+_EXPLICIT_TOPIC_CUES = (
+    "kids",
+    "kid",
+    "tutor",
+    "bullying",
+    "kindness",
+    "empathy",
+    "parents",
+    "struggling student",
+    "classroom",
+    "help that",
+    "stood up",
+    "faith",
+)
+
+
+def _has_explicit_topic(comment: str) -> bool:
+    lower = comment.lower()
+    return any(cue in lower for cue in _EXPLICIT_TOPIC_CUES)
+
 
 class SemanticSimilarityEngine:
     """Embedding-based three-way or two-way prototype classification."""
@@ -92,6 +112,8 @@ class SemanticSimilarityEngine:
     def _looks_generic(self, comment: str) -> bool:
         lower = comment.lower().strip()
         tokens = re.findall(r"[a-z']+", lower)
+        if len(tokens) > 8 and _has_explicit_topic(comment):
+            return False
         if len(tokens) <= 5 and any(t in _GENERIC_TOKENS for t in tokens):
             return True
         return lower in {"i love it", "so good", "wow", "amazing", "love this", "great video"}
@@ -173,6 +195,10 @@ class SemanticSimilarityEngine:
 
         if any(c in lower for c in ctx_cues):
             adjusted["context_dependent"] = max(adjusted.get("context_dependent", 0.0), 0.80)
+
+        if _has_explicit_topic(comment) and not self._looks_generic(comment):
+            adjusted["explicit"] = max(adjusted.get("explicit", 0.0), 0.82)
+            adjusted["ambiguous"] = min(adjusted.get("ambiguous", 0.0), 0.40)
 
         return adjusted
 

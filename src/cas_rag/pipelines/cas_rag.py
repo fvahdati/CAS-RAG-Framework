@@ -15,6 +15,10 @@ def _resolve_borderline_category(
     if not borderline:
         return category, []
 
+    if category == SemanticCategory.CONTEXT_DEPENDENT:
+        trace.append("borderline: keep Context-Dependent")
+        return category, [PromptId.P5_SEMANTIC_SIMILARITY]
+
     p5_label = ctx.semantic_llm.classify(inp.comment, ctx.scenario)
     trace.append(f"borderline P5={p5_label}")
     if p5_label == "Ambiguous":
