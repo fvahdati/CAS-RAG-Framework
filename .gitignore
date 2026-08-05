@@ -12,3 +12,6 @@ data/**/*.json
 !resources/**/*.csv
 .DS_Store
 *.log
+.git-rewrite/
+data/human_verification_batch_run.json
+data/prompt_iteration_human_queue.json

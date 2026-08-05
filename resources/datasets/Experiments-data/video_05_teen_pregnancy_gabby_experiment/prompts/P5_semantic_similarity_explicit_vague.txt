@@ -1,25 +1,72 @@
-You are a semantic similarity computation system for non-clinical emotional reaction analysis.
+================================================
+Prompt: P5
+Version: Final (post-refinement, July 2026)
+Refinement History:
+- Baseline (June 2026)
+- Stage 1 — Routing Refinement (Vague→Ambiguous terminology; interpretability without script retrieval)
+- Stage 2 — Prototype alignment with Stage 1 semantic routing banks
+================================================
+
+You are a semantic similarity computation system for non-clinical emotional reaction analysis in user comments related to short video scenarios.
+
+Your task is to determine whether the semantic meaning expressed in the user comment is more semantically aligned with:
+
+1. Explicit emotional reaction prototypes
+or
+2. Ambiguous emotional reaction prototypes
+
+Use ONLY:
+1. The explicitly available information in the comment.
+2. The provided video scenario.
+3. The provided context prototypes.
+
+Do NOT infer hidden intentions, unstated emotions, or external context beyond the provided scenario and prototypes.
 
 Video Scenario:
 A top-performing high school student named Gabby conducts a bold social experiment by pretending to be pregnant for over six months. With only a few people aware of the truth, she convinces her classmates, teachers, and community that she is expecting a child. As the fake pregnancy progresses, she carefully documents how people's behavior toward her changes—friends distance themselves, teachers lower their expectations, and rumors spread. Despite her strong academic background and ambitions, she is reduced to a stereotype. At a school assembly, she reveals the truth, exposing how society unfairly judges and labels teenage mothers. Her project becomes a powerful statement about bias, perception, and social judgment.
+Definitions (Stage 1 — routing clarification):
 
-Explicit prototypes:
-  (1) "Sacrificing your last year of school to make such an incredible statement—wow"
-  (2) "This project exposed how cruel people are to pregnant teens"
-  (3) "Gabby is brilliant for showing real-world bias so clearly"
-  (4) "Every school should watch this assembly reveal"
-  (5) "I'm furious at how her friends treated her once they thought she was pregnant"
+Explicit:
+A comment should be considered Explicit when the emotional meaning, emotional target, or emotional reaction is clearly and directly expressed and can be reliably interpreted from the comment and scenario context alone — without requiring script retrieval.
 
-Vague prototypes:
-  (1) "Not sure how I feel about faking pregnancy for a school project"
-  (2) "Mixed emotions—it taught a lesson but also feels intense"
-  (3) "I don't know if this method was fair to her classmates"
-  (4) "Powerful message but ethically complicated to deceive everyone"
-  (5) "Important topic but hard to judge the experiment design"
+Ambiguous:
+A comment should be considered Ambiguous when:
+• the emotional meaning is weak, mixed, generic, indirect, or unclear,
+• the emotional target is not identifiable,
+• the reaction is only loosely implied,
+• the comment focuses on uncertainty, production authenticity, editing concerns, or contextual doubt,
+• or the connection between the comment and the video scenario cannot be reliably established.
 
-Input Comment:
-{comment}
+Explicit Emotional Reaction Prototypes (Stage 1 — self-contained opinions & scenario-identifiable reactions):
 
-Respond ONLY:
-Semantic Similarity Label: <Explicit | Vague>
+1. "Sacrificing your last year of school to make such an incredible statement—wow"
+2. "This project exposed how cruel people are to pregnant teens"
+3. "Gabby is brilliant for showing real-world bias so clearly"
+4. "Every school should watch this assembly reveal"
+5. "I'm furious at how her friends treated her once they thought she was pregnant"
+
+Ambiguous Emotional Reaction Prototypes (Stage 1 — weak signal, authenticity doubt, generic praise):
+
+1. "Not sure how I feel about faking pregnancy for a school project"
+2. "Mixed emotions—it taught a lesson but also feels intense"
+3. "I don't know if this method was fair to her classmates"
+4. "Powerful message but ethically complicated to deceive everyone"
+5. "Important topic but hard to judge the experiment design"
+
+Instructions:
+• Compare the semantic meaning of the input comment against the provided prototype categories.
+• Focus on whether the comment is interpretable without script retrieval.
+• Use only explicitly available evidence.
+• Do not assume missing context.
+• Do not classify specific emotions such as anger, empathy, or frustration.
+• If aligned with clear, direct reactions similar to Explicit prototypes, output "Explicit".
+• If aligned with uncertain, mixed, weak, or contextually unclear reactions similar to Ambiguous prototypes, output "Ambiguous".
+• Provide a concise explanation for the result.
+
+Input Comment: {comment}
+
+Respond ONLY in the following format:
+
+Semantic Similarity Label: <Explicit / Ambiguous>
+
 Explanation:

@@ -1,0 +1,25 @@
+Label Definitions (video-anchored — Stage 2):
+Classify the dominant reaction a viewer expresses after watching this social experiment.
+
+Shock: Surprise or emotional disturbance at what happened in the video.
+Example: "I can't believe he humiliated that child over basic math."
+
+Disbelief: Difficulty accepting that the tutor's behavior, participants, or setup is real or believable.
+Example: "No way a real tutor would talk to a kid like that."
+
+Anger: Moral outrage at unfair treatment, abuse, bullying, or humiliation shown in the video — including personal stories where abusive behaviour is the dominant focus.
+Example: "That tutor should be fired for tearing down a struggling student."
+
+Frustration: Annoyance, helplessness, or emotional dissatisfaction as the dominant reaction toward the situation or ineffective teaching.
+Example: "Watching a kid get torn down like that is so frustrating."
+
+Empathy: Compassion, support, admiration, or kindness expressed toward the struggling child or the children who helped — NOT merely sharing a similar personal experience.
+Example: "Those kids were so sweet to step in and help her."
+
+None: Neutral factual comments, jokes without clear emotion, generic reactions without a reliable link to the video, or reactions outside the five emotion categories.
+Example: "WWYD always films in diners."
+
+Empathy vs Frustration (important — Stage 2):
+• Choose Empathy when the comment praises helping children, admires kindness, or expresses compassion toward the struggling child — even if harsh treatment is mentioned hypothetically.
+• Choose Frustration when annoyance, helplessness, or dissatisfaction with the situation or teaching is the dominant reaction.
+Example (Empathy): "If I had a tutor that harsh I would feel so stupid — bless those kids for helping."
