@@ -4,7 +4,14 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
+
+_SCRIPTS = Path(__file__).resolve().parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+
+from prompt_snippets import get_p1_snippets, get_p2_snippets
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "resources" / "datasets" / "Experiments-data"
@@ -298,6 +305,33 @@ def _inject_scenario(template: str, scenario: str) -> str:
     return "\n".join(out)
 
 
+def _inject_p1_snippets(template: str, slug: str) -> str:
+  snippets = get_p1_snippets(slug)
+  return (
+    template.replace("__P1_NAMED_CHARACTERS_HINT__", snippets["named_characters_hint"])
+    .replace("__P1_RESOLVED_CRITERIA__", snippets["resolved_criteria"])
+    .replace("__P1_CONTRASTIVE_EXAMPLES__", snippets["contrastive_examples"])
+  )
+
+
+def _inject_p2_snippets(template: str, slug: str) -> str:
+  snippets = get_p2_snippets(slug)
+  return (
+    template.replace("__P2_EMOTION_DEFINITIONS__", snippets["emotion_definitions"])
+    .replace("__P2_BORDERLINE_RULES__", snippets["borderline_rules"])
+  )
+
+
+def _build_p1(scenario: str, slug: str) -> str:
+  template = _inject_scenario(_read_template("P1_prompt.txt"), scenario)
+  return _inject_p1_snippets(template, slug)
+
+
+def _build_p2(scenario: str, slug: str) -> str:
+  template = _inject_scenario(_read_template("P2_prompt.txt"), scenario)
+  return _inject_p2_snippets(template, slug)
+
+
 def _build_p5(scenario: str, prototypes: dict) -> str:
     """Inject per-video scenario and prototype banks into canonical P5 template."""
     template = _inject_scenario(_read_template("P5_prompt.txt"), scenario)
@@ -365,18 +399,21 @@ def write_video_package(video: dict) -> None:
     }
     (base / "video_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
-    (base / "script_corpus.txt").write_text(
-        f"# Placeholder retrieval corpus for {video['display_name']}\n"
-        f"# Replace with video transcript chunks (YouTube captions / ASR).\n"
-        f"# YouTube ID: {video['youtube_video_id']}\n\n"
-        f"Scene summary: {video['short_scenario']}\n",
-        encoding="utf-8",
-    )
+    corpus_path = base / "script_corpus.txt"
+    if not corpus_path.exists():
+        corpus_path.write_text(
+            f"# Placeholder retrieval corpus for {video['display_name']}\n"
+            f"# Replace with video transcript chunks (YouTube captions / ASR).\n"
+            f"# YouTube ID: {video['youtube_video_id']}\n\n"
+            f"Scene summary: {video['short_scenario']}\n",
+            encoding="utf-8",
+        )
 
     scenario = video["full_scenario"]
+    slug = video["slug"]
     mapping = {
-        "P1_unknown_reference_detection.txt": _inject_scenario(_read_template("P1_prompt.txt"), scenario),
-        "P2_rag_emotion_classification.txt": _inject_scenario(_read_template("P2_prompt.txt"), scenario),
+        "P1_unknown_reference_detection.txt": _build_p1(scenario, slug),
+        "P2_rag_emotion_classification.txt": _build_p2(scenario, slug),
         "P3_no_rag_emotion_classification.txt": _inject_scenario(_read_template("P3_prompt.txt"), scenario),
         "P4_semantic_ambiguity_verification.txt": _inject_scenario(_read_template("P4_prompt.txt"), scenario),
         "P5_semantic_similarity_explicit_vague.txt": _build_p5(scenario, video["prototypes"]),
