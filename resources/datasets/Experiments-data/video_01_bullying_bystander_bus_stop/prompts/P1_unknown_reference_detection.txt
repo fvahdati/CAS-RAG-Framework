@@ -1,7 +1,14 @@
+================================================
+Prompt: P1
+Version: Final (post-refinement, July 2026)
+Refinement History:
+- Baseline (June 2026)
+- Stage 1 — Routing & Retrieval Refinement (resolved-reference logic, contrastive examples)
+================================================
+
 You are an unknown reference detection system for non-clinical emotional reaction analysis.
 
-Your task is to determine whether the following user comment contains any unknown, unresolved, or
-contextually unclear references.
+Your task is to determine whether the following user comment contains any unknown, unresolved, or contextually unclear references that require video script context to interpret.
 
 Use ONLY:
 1. The explicitly available information in the comment.
@@ -9,24 +16,43 @@ Use ONLY:
 
 Do NOT infer missing identities, unstated contextual links, or external context beyond the provided scenario.
 
-Video Scenario:
+Short Video Scenario:
 This staged social experiment takes place at a public bus stop where a teenage girl is sitting alone reading a book. Two individuals begin verbally bullying her, mocking her appearance, personality, and social life. The girl becomes visibly uncomfortable but does not respond. Initially, bystanders watch without intervening, but as the situation escalates, several people step in—some confront the bullies directly, while others support the victim by offering comfort and inclusion. The experiment highlights different types of bystander behavior and emphasizes the importance of standing up against bullying and supporting vulnerable individuals.
-A reference should be considered unknown or unresolved when:
+Stage 1 — Resolved vs Unresolved Reference Logic:
+
+A reference should be considered unknown or unresolved (output Yes) when:
 • the identity of a person, group, or target is unclear,
-• a pronoun cannot be reliably linked to a known entity,
+• a pronoun cannot be reliably linked to a known entity from the scenario alone,
+• the comment names a character not identifiable from the scenario summary (e.g., Harper, Aubrey),
 • the emotional target is implicit but not identifiable,
-• or the comment depends on missing contextual information that is not available in the comment or scenario.
+• or the comment depends on a specific scene moment or line not inferable from the scenario summary.
 
-Example:
+A reference should be considered resolved (output No) when:
+• the comment clearly refers to the tutor, the struggling child, the helping children, or the diner experiment,
+• the comment is a general hypothetical reaction to the tutor's harsh behaviour without naming an unresolved person,
+• or identifiable scenario entities ("those kids", "the tutor", "that child") resolve all referents.
 
-Comment:
-"She handled that really well."
+Contrastive Examples (Stage 1):
 
-Unknown Reference:
-Yes
+Comment: "She handled that really well."
+Unknown Reference: Yes
+Explanation: The identity of "she" is unclear from the scenario alone.
 
-Explanation:
-The identity of "she" is unclear.
+Comment: "Those kids were so brave."
+Unknown Reference: No
+Explanation: "Those kids" refers to nearby children who helped — identifiable from the scenario.
+
+Comment: "If I had a tutor that harsh I would feel so stupid."
+Unknown Reference: No
+Explanation: Refers to the tutor's harsh behaviour from the scenario; no unresolved entity.
+
+Comment: "When Harper walked over I melted."
+Unknown Reference: Yes
+Explanation: Requires script context to identify who Harper is and which moment is referenced.
+
+Comment: "Aubrey calmly calling out that tutor felt composed."
+Unknown Reference: Yes
+Explanation: Named character Aubrey is not identifiable from the scenario summary alone.
 
 Instructions:
 • Check whether the comment contains unclear pronouns, unnamed entities, implicit targets, or unresolved references.

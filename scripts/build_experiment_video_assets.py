@@ -261,56 +261,62 @@ def _read_template(name: str) -> str:
 
 
 def _inject_scenario(template: str, scenario: str) -> str:
-    # Replace tutoring default scenario block in P2/P3/P4/P6/P7
+    """Replace scenario blocks while preserving refinement headers and shared rule sections."""
     lines = template.splitlines()
-    out = []
-    skip_until_blank = False
+    out: list[str] = []
+    skip_until_marker = False
+    scenario_labels = ("Video Scenario:", "Short Video Scenario:")
+    stop_prefixes = (
+        "Predefined",
+        "Stage 1",
+        "Definitions",
+        "Explicit Emotional",
+        "Ambiguous Emotional",
+        "A reference should",
+        "Contrastive Examples",
+        "Instructions:",
+        "Label Definitions",
+        "Borderline Decision",
+        "Rule 1",
+        "You are a semantic similarity",
+    )
     for line in lines:
-        if line.startswith("Video Scenario:") or line.startswith("Short Video Scenario:"):
-            out.append("Video Scenario:")
+        if any(line.startswith(label) for label in scenario_labels):
+            label = "Short Video Scenario:" if line.startswith("Short Video Scenario:") else "Video Scenario:"
+            out.append(label)
             out.append(scenario)
-            skip_until_blank = True
+            skip_until_marker = True
             continue
-        if skip_until_blank:
-            if line.strip() == "" or line.startswith("Predefined"):
-                skip_until_blank = False
-                if line.startswith("Predefined"):
-                    out.append(line)
+        if skip_until_marker:
+            if line.strip() == "":
                 continue
+            if any(line.startswith(prefix) for prefix in stop_prefixes):
+                skip_until_marker = False
+                out.append(line)
             continue
         out.append(line)
-    text = "\n".join(out)
-    # P5: inject scenario after Video Scenario:
-    if "Semantic Similarity Label" in text and scenario not in text:
-        text = text.replace(
-            "Video Scenario:\nA hidden camera",
-            f"Video Scenario:\n{scenario}",
-            1,
-        )
-    return text
+    return "\n".join(out)
 
 
 def _build_p5(scenario: str, prototypes: dict) -> str:
-    exp = "\n".join(f'  ({i+1}) "{p}"' for i, p in enumerate(prototypes["explicit"]))
-    vag = "\n".join(f'  ({i+1}) "{p}"' for i, p in enumerate(prototypes["vague"]))
-    return f"""You are a semantic similarity computation system for non-clinical emotional reaction analysis.
-
-Video Scenario:
-{scenario}
-
-Explicit prototypes:
-{exp}
-
-Vague prototypes:
-{vag}
-
-Input Comment:
-{{comment}}
-
-Respond ONLY:
-Semantic Similarity Label: <Explicit | Vague>
-Explanation:
-"""
+    """Inject per-video scenario and prototype banks into canonical P5 template."""
+    template = _inject_scenario(_read_template("P5_prompt.txt"), scenario)
+    exp_block = "\n".join(f'{i + 1}. "{p}"' for i, p in enumerate(prototypes["explicit"]))
+    vague_block = "\n".join(f'{i + 1}. "{p}"' for i, p in enumerate(prototypes["vague"]))
+    if "Explicit Emotional Reaction Prototypes" not in template:
+        return template
+    exp_start = template.index("Explicit Emotional Reaction Prototypes")
+    amb_start = template.index("Ambiguous Emotional Reaction Prototypes")
+    instr_start = template.index("Instructions:")
+    head = template[:exp_start]
+    tail = template[instr_start:]
+    mid = (
+        "Explicit Emotional Reaction Prototypes (Stage 1 — self-contained opinions & scenario-identifiable reactions):\n\n"
+        f"{exp_block}\n\n"
+        "Ambiguous Emotional Reaction Prototypes (Stage 1 — weak signal, authenticity doubt, generic praise):\n\n"
+        f"{vague_block}\n\n"
+    )
+    return head + mid + tail
 
 
 def write_video_package(video: dict) -> None:
@@ -353,7 +359,7 @@ def write_video_package(video: dict) -> None:
             "prompts_dir": f"{video['slug']}/prompts/",
             "script_corpus": f"{video['slug']}/script_corpus.txt",
         },
-        "cas_rag_layer1_categories": ["Explicit", "Vague", "Context-Dependent"],
+        "cas_rag_layer1_categories": ["Explicit", "Ambiguous", "Context-Dependent"],
         "emotion_labels": ["Shock", "Disbelief", "Anger", "Frustration", "Empathy", "None"],
         "human_verification": "required",
     }
