@@ -30,52 +30,52 @@ Predefined non-clinical emotional state labels:
 Label Definitions (video-anchored — Stage 2):
 Classify the dominant reaction a viewer expresses after watching this social experiment.
 
-Shock: Surprise or emotional disturbance at what happened in the video.
-Example: "I can't believe he humiliated that child over basic math."
+Shock: Surprise or emotional disturbance at an adult encouraging a teenager to use drugs.
+Example: "I can't believe a stranger offered drugs to a kid while his mom was away."
 
-Disbelief: Difficulty accepting that the tutor's behavior, participants, or setup is real or believable.
-Example: "No way a real tutor would talk to a kid like that."
+Disbelief: Difficulty accepting that the scenario, participants, or setup is real or believable.
+Example: "No way someone would openly normalise drug use to a teenager in public."
 
-Anger: Moral outrage at unfair treatment, abuse, bullying, or humiliation shown in the video — including personal stories where abusive behaviour is the dominant focus.
-Example: "That tutor should be fired for tearing down a struggling student."
+Anger: Moral outrage at drug normalisation, peer pressure, or endangering a minor — including personal stories where drug pressure is the dominant focus.
+Example: "Disgusted by the actor normalising drug use to a kid."
 
-Frustration: Annoyance, helplessness, or emotional dissatisfaction as the dominant reaction toward the situation or ineffective teaching.
-Example: "Watching a kid get torn down like that is so frustrating."
+Frustration: Annoyance, helplessness, or emotional dissatisfaction as the dominant reaction toward the danger or bystander hesitation.
+Example: "Watching adults hesitate to interfere in someone else's parenting was frustrating."
 
-Empathy: Compassion, support, admiration, or kindness expressed toward the struggling child or the children who helped — NOT merely sharing a similar personal experience.
-Example: "Those kids were so sweet to step in and help her."
+Empathy: Compassion, support, admiration, or kindness expressed toward the teenager, the mother, or bystanders who intervened — NOT merely sharing a similar personal experience.
+Example: "Proud of the people who stepped in against that adult."
 
 None: Neutral factual comments, jokes without clear emotion, generic reactions without a reliable link to the video, or reactions outside the five emotion categories.
-Example: "WWYD always films in diners."
+Example: "Drug prevention videos are important content."
 
 Empathy vs Frustration (important — Stage 2):
-• Choose Empathy when the comment praises helping children, admires kindness, or expresses compassion toward the struggling child — even if harsh treatment is mentioned hypothetically.
-• Choose Frustration when annoyance, helplessness, or dissatisfaction with the situation or teaching is the dominant reaction.
-Example (Empathy): "If I had a tutor that harsh I would feel so stupid — bless those kids for helping."
+• Choose Empathy when the comment praises intervening bystanders, admires protection of the teen, or expresses concern for the family — even if drug pressure is mentioned hypothetically.
+• Choose Frustration when annoyance, helplessness, or dissatisfaction with the danger or hesitation is the dominant reaction.
+Example (Empathy): "If a stranger offered my kid drugs I'd want someone to warn me — that bystander is the real MVP."
 
-Borderline Decision Rules (Stage 3 — codified from 22 Tutoring borderline cases):
+Borderline Decision Rules (Stage 3 — codified borderline cases):
 
-Rule 1 — Personal Abuse → Anger
-If a commenter describes being abused, bullied, humiliated, or physically or verbally mistreated by a teacher, tutor, or authority figure, classify as Anger when the abusive or unfair behaviour is the dominant focus — even if the commenter never explicitly says they were angry.
-Example: "My tutor hit me for getting the answer wrong." → Anger
+Rule 1 — Personal Abuse/Mistreatment → Anger
+If a commenter describes being abused, bullied, humiliated, manipulated, judged, or physically or verbally mistreated, classify as Anger when the abusive or unfair behaviour is the dominant focus — even if the commenter never explicitly says they were angry.
+Example: "A stranger once offered me drugs when my parents weren't around" → Anger
 
 Rule 2 — Shared Experience ≠ Empathy
 Sharing a similar personal experience alone does NOT indicate Empathy.
 Empathy requires explicit compassion, concern, encouragement, sympathy, support, or admiration toward another person in the video.
 Autobiographical stories should be classified by their dominant emotional reaction, not automatically as Empathy.
 
-Rule 3 — Teaching Advice and Constructive Support
-Comments about how the child should be taught should not be classified solely because advice is present.
-• If the advice reflects concern, support, patience, or advocacy for the struggling child in response to events in the video → Empathy.
-• If the advice is a neutral educational opinion without a clear emotional reaction toward the child or video events → None.
-Do not infer Empathy solely because the commenter proposes a better teaching method.
+Rule 3 — Advice and Constructive Support
+Comments offering advice should not be classified solely because advice is present.
+• If the advice reflects concern, support, patience, or advocacy for a vulnerable person in response to events in the video → Empathy.
+• If the advice is a neutral opinion without a clear emotional reaction toward people or events in the video → None.
+Do not infer Empathy solely because the commenter offers parenting or drug-prevention advice.
 
 Rule 4 — Questioning Reality → Disbelief
 Comments questioning whether the experiment, participants, or setting are real, believable, staged, or authentic → Disbelief.
-Examples: "This looks fake." / "No way this happened." / "That kid is definitely an actor."
+Examples: "This looks fake." / "No way this happened." / "That person is definitely an actor."
 
 Rule 5 — Generic Praise
-Generic praise ("great kids", "so sweet", "wonderful") → Empathy ONLY when it clearly refers to the children's kindness, compassion, encouragement, support, or intervention in the experiment.
+Generic praise ("MVP", "hero", "proud") → Empathy ONLY when it clearly refers to kindness, compassion, encouragement, support, or intervention shown in the experiment.
 Otherwise → None or Ambiguous (when applicable).
 
 Rule 6 — Video Reaction Priority

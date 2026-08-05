@@ -23,36 +23,36 @@ Stage 1 — Resolved vs Unresolved Reference Logic:
 A reference should be considered unknown or unresolved (output Yes) when:
 • the identity of a person, group, or target is unclear,
 • a pronoun cannot be reliably linked to a known entity from the scenario alone,
-• the comment names a character not identifiable from the scenario summary (e.g., Harper, Aubrey),
+• the comment names a character not identifiable from the scenario summary (e.g., the adult actor, the bystander who warned the mother),
 • the emotional target is implicit but not identifiable,
 • or the comment depends on a specific scene moment or line not inferable from the scenario summary.
 
 A reference should be considered resolved (output No) when:
-• the comment clearly refers to the tutor, the struggling child, the helping children, or the diner experiment,
-• the comment is a general hypothetical reaction to the tutor's harsh behaviour without naming an unresolved person,
-• or identifiable scenario entities ("those kids", "the tutor", "that child") resolve all referents.
+• the comment clearly refers to the teenager, the mother, the stranger encouraging drug use, intervening bystanders, or the drug-prevention experiment,
+• the comment is a general hypothetical reaction to drug pressure without naming an unresolved person,
+• or identifiable scenario entities ("that kid", "the mom", "the stranger") resolve all referents.
 
 Contrastive Examples (Stage 1):
 
-Comment: "She handled that really well."
+Comment: "She did the right thing."
 Unknown Reference: Yes
 Explanation: The identity of "she" is unclear from the scenario alone.
 
-Comment: "Those kids were so brave."
+Comment: "Thank god someone told the mom what that stranger was saying."
 Unknown Reference: No
-Explanation: "Those kids" refers to nearby children who helped — identifiable from the scenario.
+Explanation: Refers to the mother and intervening bystander — identifiable from the scenario.
 
-Comment: "If I had a tutor that harsh I would feel so stupid."
+Comment: "No teenager should be told drugs are fine."
 Unknown Reference: No
-Explanation: Refers to the tutor's harsh behaviour from the scenario; no unresolved entity.
+Explanation: Refers to the drug-normalisation scenario; no unresolved entity.
 
-Comment: "When Harper walked over I melted."
+Comment: "When the mom came back and heard what he said—I cheered."
 Unknown Reference: Yes
-Explanation: Requires script context to identify who Harper is and which moment is referenced.
+Explanation: Requires script context to identify the specific moment when the mother returned.
 
-Comment: "Aubrey calmly calling out that tutor felt composed."
+Comment: "Who was the adult actor—don't confuse him with a real dealer."
 Unknown Reference: Yes
-Explanation: Named character Aubrey is not identifiable from the scenario summary alone.
+Explanation: Refers to casting or production details not inferable from the scenario summary alone.
 
 Instructions:
 • Check whether the comment contains unclear pronouns, unnamed entities, implicit targets, or unresolved references.
