@@ -2,7 +2,7 @@
   "video_slug": "video_05_teen_pregnancy_gabby_experiment",
   "youtube_video_id": "8ddhPrll65Y",
   "explicit": [
-    "Sacrificing your last year of school to make such an incredible statement\u2014wow",
+    "Sacrificing your last year of school to make such an incredible statement—wow",
     "This project exposed how cruel people are to pregnant teens",
     "Gabby is brilliant for showing real-world bias so clearly",
     "Every school should watch this assembly reveal",
@@ -10,7 +10,7 @@
   ],
   "vague": [
     "Not sure how I feel about faking pregnancy for a school project",
-    "Mixed emotions\u2014it taught a lesson but also feels intense",
+    "Mixed emotions—it taught a lesson but also feels intense",
     "I don't know if this method was fair to her classmates",
     "Powerful message but ethically complicated to deceive everyone",
     "Important topic but hard to judge the experiment design"
@@ -18,8 +18,15 @@
   "context_dependent": [
     "When she revealed it at the assembly I lost it",
     "Gabby Rodriguez is an icon for doing this project",
-    "That moment her friends realised it was fake\u2014chills",
+    "That moment her friends realised it was fake—chills",
     "The teacher who lowered expectations should be ashamed",
     "Who else paused when she showed the six-month timeline"
+  ],
+  "ambiguous": [
+    "Not sure how I feel about faking pregnancy for a school project",
+    "Mixed emotions—it taught a lesson but also feels intense",
+    "I don't know if this method was fair to her classmates",
+    "Powerful message but ethically complicated to deceive everyone",
+    "Important topic but hard to judge the experiment design"
   ]
 }

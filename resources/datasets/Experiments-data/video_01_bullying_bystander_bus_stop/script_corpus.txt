@@ -1,5 +1,24 @@
-# Placeholder retrieval corpus for Bullying Bystander — Bus Stop
-# Replace with video transcript chunks (YouTube captions / ASR).
-# YouTube ID: Vo7kl9RsWBo
+# Retrieved video script corpus — Teenagers Bullying Prevention (Bus Stop Social Experiment)
+# Source: YouTube captions (auto-generated), video ID Vo7kl9RsWBo
+# Title: This Girl Was Getting Bullied. How These People Reacted Will Amaze You.
+# Setting: Public bus stop | Staged verbal bullying / bystander intervention experiment
+# Key personas referenced in comments: Victim (girl reading a book); two verbal bullies;
+#   "You keep reading" bystander (encourages the victim / challenges the bullies);
+#   Harmonica Guy (plays harmonica near the end to comfort the victim);
+#   other bystanders who confront the bullies and support the victim.
 
-Scene summary: A social experiment shows how bystanders respond when a teenage girl is verbally bullied in public.
+Who will stop the bullying? Will the bystanders remain silent? Or will they take a stand? Watch this powerful video.
+
+If you or someone you know is in crisis, please seek help from a friend or family member, teacher or medical professional.
+
+At a public bus stop, a teenage girl sits alone reading a book. Two people approach and begin verbally bullying her. They mock her social life, appearance, and personality, asking whether she has any friends at all and suggesting that even people from her dance team pretended to be sick to avoid her birthday party.
+
+They continue escalating: they claim she sounded like a dying pig when she auditioned for the musical, insult her looks, and ridicule her for reading and not talking to anyone. The girl stays mostly quiet and keeps trying to read while becoming visibly uncomfortable.
+
+A bystander challenges the bullies. He asks how they would like it if someone older treated them that way, and tells them you do not hurt someone's feelings intentionally. He also affirms the victim's reading, telling her — in a moment many viewers remember — "you keep reading."
+
+Other bystanders react with disgust at the bullies' behavior. One person invites the girl to sit with them on the bus, while another bully tries to dismiss that bus as being only for "weird people."
+
+As the bullying continues, more bystanders intervene: some confront the bullies directly, while others move closer to support and include the victim. Near the end of the experiment, an older man — the Harmonica Guy — sits with the girl and plays harmonica to cheer her up and make her feel safer and less alone.
+
+The video highlights different bystander responses: silence, confrontation, inclusion, and comfort. It emphasizes standing up against bullying and supporting vulnerable people in public spaces.

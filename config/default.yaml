@@ -30,9 +30,9 @@ retrieval:
   chunk_size: 400
 
 semantic:
-  margin_explicit_ambiguous: 0.10
-  margin_explicit_vague: 0.10
-  llm_arbitration_on_borderline: true
+  margin_m: 0.12
+  margin_b: 0.08
+  llm_arbitration_on_borderline: true  # Algorithms 3–4 only; CAS-RAG Layer 1 does not call P5
 
 spacy:
   model: en_core_web_sm

@@ -9,12 +9,14 @@ def _semantic_two_way(
     ctx: PipelineContext,
     inp: CommentInput,
 ) -> tuple[str, list[PromptId]]:
-    """Explicit vs Vague (Ambiguous) routing per thesis design diagram."""
-    _, _, borderline = ctx.semantic.classify_three_way(inp.comment)
-    if borderline:
+    """Explicit vs Ambiguous two-way routing. P5 only on the Explicit--Ambiguous borderline."""
+    scores = ctx.semantic._raw_scores(inp.comment)
+    sigma = "Ambiguous" if scores.get("ambiguous", 0.0) > scores.get("explicit", 0.0) else "Explicit"
+    gap = abs(scores.get("ambiguous", 0.0) - scores.get("explicit", 0.0))
+    if gap <= ctx.semantic.margin_b:
         sigma = ctx.semantic_llm.classify(inp.comment, ctx.scenario)
         return sigma, [PromptId.P5_SEMANTIC_SIMILARITY]
-    return ctx.semantic.classify_two_way(inp.comment), []
+    return sigma, []
 
 
 def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
@@ -35,7 +37,7 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             trace=["P1 unknown reference -> P2"],
         )
 
-    # Step 2: Semantic similarity (Explicit / Vague)
+    # Step 2: Semantic similarity (Explicit / Ambiguous)
     sigma, routing_prompts = _semantic_two_way(ctx, inp)
 
     if sigma == "Ambiguous":
@@ -52,7 +54,7 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 pending_human=True,
                 prompts_invoked=prompts,
                 explanation=expl,
-                trace=["sigma=Vague -> P6=Ambiguous -> human verification"],
+                trace=["sigma=Ambiguous -> P6=Ambiguous -> human verification"],
             )
         if label is None:
             return PipelineResult(
@@ -63,7 +65,7 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
                 semantic_category=SemanticCategory.AMBIGUOUS,
                 prompts_invoked=prompts,
                 explanation=expl,
-                trace=["sigma=Vague -> P6 -> discarded"],
+                trace=["sigma=Ambiguous -> P6 -> discarded"],
             )
         return PipelineResult(
             comment_id=inp.comment_id,
@@ -74,7 +76,7 @@ def run_algorithm4(ctx: PipelineContext, inp: CommentInput) -> PipelineResult:
             semantic_category=SemanticCategory.AMBIGUOUS,
             prompts_invoked=prompts,
             explanation=expl,
-            trace=["sigma=Vague -> P6 clear"],
+            trace=["sigma=Ambiguous -> P6 clear"],
         )
 
     label, secondary, expl = ctx.no_rag.classify_p7(inp.comment, ctx.scenario)
