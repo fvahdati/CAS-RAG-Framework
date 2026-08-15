@@ -1,16 +1,26 @@
 # CAS-RAG Research Platform
 
-**CAS-RAG** (Context-Aware Semantic Retrieval-Augmented Generation) is a research-grade NLP platform for **non-clinical emotional reaction analysis** on user comments related to social-experiment videos.
+**CAS-RAG** (Context-Aware Selective RAG / RAG-GATE) is the reference implementation of the thesis methodology: **non-clinical emotional reaction analysis** on YouTube comments under videos related to adolescent topics, with **selective retrieval**.
 
-Aligned with the thesis methodology (Chapter 4), the platform implements:
+## Study design (must match the thesis)
 
-| Pipeline | Description |
-|----------|-------------|
-| **Algorithm 1** | LLM–LLM (P1 → P2 / P3 → P4 + human verification) |
-| **Algorithm 2** | spaCy–LLM (linguistic gate → P2 / P3 → P4 + human verification) |
-| **Algorithm 3** | spaCy unknown-reference gate → P2; else two-way semantic (Explicit/Vague) → P7 / P6 + human verification |
-| **Algorithm 4** | LLM unknown-reference gate (P1) → P2; else two-way semantic (Explicit/Vague) → P7 / P6 + human verification |
-| **CAS-RAG** | Three-way semantic routing (Explicit / Ambiguous / Context-Dependent) + selective RAG |
+| Evaluation layer | Coverage |
+|------------------|----------|
+| **Routing (Layer 1)** | Six annotated datasets (~100 comments each; 600 total) |
+| **Emotion classification** | Tutoring/Diner and Bullying/Bus Stop only (\(N{=}100\) each); Algorithms 1--4 vs CAS-RAG |
+| **Not emotion-evaluated** | Mental health, teen safety, teen pregnancy, drug prevention (routing / cost audit only) |
+
+## Pipelines
+
+| Pipeline | Gate | Emotion prompts |
+|----------|------|-----------------|
+| **Algorithm 1** | LLM P1 (unknown-reference) | P2 if RAG; else P3 then P4 + human verification |
+| **Algorithm 2** | spaCy linguistic gate | P2 if RAG; else P3 then P4 + human verification |
+| **Algorithm 3** | spaCy, then two-way semantic (Explicit / Ambiguous) | P2 / P7 / P6 + human verification |
+| **Algorithm 4** | P1, then two-way semantic (Explicit / Ambiguous) | P2 / P7 / P6 + human verification |
+| **CAS-RAG** | Seven-metric three-way semantic routing (no P1/P5 at the gate); Layer 2 spaCy on Context-Dependent only | P7 Explicit; P6 Ambiguous; P2 if RAG-resolvable |
+
+Layer 1 defaults: SentenceTransformer `all-MiniLM-L6-v2`, seven-metric weights in `config/default.yaml`, margins \(m{=}0.12\), \(b{=}0.08\). No dataset-specific phrase lists on the production routing path.
 
 ## Architecture
 
@@ -18,50 +28,41 @@ Aligned with the thesis methodology (Chapter 4), the platform implements:
 CAS_RAG_Project/
 ├── api/                 # FastAPI REST backend
 ├── dashboard/           # Streamlit analytics dashboard
-├── config/              # YAML configuration
-├── resources/           # Prompts, prototypes, datasets, scenarios
+├── config/              # YAML configuration (margins, embeddings, top_k)
+├── resources/           # Prompts, prototypes, six video packages
 ├── data/                # Runtime outputs (evaluations, analytics)
-├── src/cas_rag/         # Core library (modular subsystems)
+├── src/cas_rag/         # Core library
 ├── scripts/             # CLI experiment runners
 └── tests/               # Unit & integration tests
 ```
+
+Six video folders live under `resources/datasets/Experiments-data/video_01_...` through `video_06_...`. Each contains `scenario_full.txt`, `script_corpus.txt`, `prototypes_semantic.json`, and prompts P1--P7.
 
 ## Quick start
 
 ```bash
 cd CAS_RAG_Project
 python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev,dashboard,api]"
+pip install -e ".[dev,openai,dashboard,api]"
 cp .env.example .env
 python -m spacy download en_core_web_sm
-python scripts/run_experiment.py --algorithm cas_rag --input resources/datasets/sample/comments.csv
-uvicorn api.main:app --reload --port 8000
-streamlit run dashboard/app.py
+python scripts/run_experiment.py --algorithm cas_rag \
+  --input resources/datasets/Experiments-data/comments.csv \
+  --video-slug video_02_education_tutoring_diner
+python scripts/run_five_algorithm_comparison.py \
+  --input resources/datasets/Experiments-data/comments_education_tutoring_diner.xlsx \
+  --video-slug video_02_education_tutoring_diner --kpi
 ```
 
-## LLM providers (real models by default)
+Thesis runs require `CAS_RAG_OFFLINE_MODE=0` (or unset) so embeddings use the trained encoder.
 
-1. Copy `.env.example` to `.env` and set **`OPENAI_API_KEY`** (or Gemini / Ollama — see below).
-2. Default provider is **`openai`** (ChatGPT). Alternatives: `gemini`, `ollama` (local Llama/Meta via [Ollama](https://ollama.com)).
+## LLM providers
 
-```bash
-cp .env.example .env
-# Edit .env: OPENAI_API_KEY=sk-...
-pip install -e ".[openai]"   # or [gemini] for Google
-python scripts/run_experiment.py --algorithm cas_rag --input resources/datasets/Experiments-data/comments.csv
-```
-
-| Provider | Env vars | Install extra |
-|----------|----------|---------------|
-| `openai` | `OPENAI_API_KEY`, `OPENAI_MODEL` | `pip install -e ".[openai]"` |
-| `gemini` | `GEMINI_API_KEY`, `GEMINI_MODEL` | `pip install -e ".[gemini]"` |
-| `ollama` | `OLLAMA_BASE_URL`, `OLLAMA_MODEL` | Ollama daemon + `ollama pull llama3.2` |
-
-**Mock LLM** is disabled for experiments. It is only available when `CAS_RAG_ALLOW_MOCK=1` (used automatically in `pytest`).
+Default: **`openai`** (`gpt-4o-mini`). Alternatives: `gemini`, `ollama`. Mock LLM is tests-only (`CAS_RAG_ALLOW_MOCK=1` / pytest).
 
 ## Human verification
 
-Ambiguous comments are **always** routed to the human verification queue (`data/human_verification_queue.json`). Processing pauses until a reviewer submits a decision via API or CLI.
+Ambiguous P4/P6 outcomes and Context-Dependent **RAG-infeasible** (video mismatch) comments are queued in `data/human_verification_queue.json`.
 
 ## License
 

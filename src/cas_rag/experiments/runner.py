@@ -18,8 +18,14 @@ class ExperimentRunner:
         self.output_dir = output_dir or (settings.project_root / "data" / "evaluation_outputs")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-    def run(self, algorithm: AlgorithmId, dataset_path: Path, llm_provider: str | None = None) -> Path:
-        engine = PipelineEngine(algorithm, llm_provider=llm_provider)
+    def run(
+        self,
+        algorithm: AlgorithmId,
+        dataset_path: Path,
+        llm_provider: str | None = None,
+        video_slug: str | None = "video_02_education_tutoring_diner",
+    ) -> Path:
+        engine = PipelineEngine(algorithm, llm_provider=llm_provider, video_slug=video_slug)
         results = engine.process_dataset(dataset_path)
         loader = DatasetLoader()
         comments = loader.load_comments(dataset_path)

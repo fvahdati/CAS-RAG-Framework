@@ -22,14 +22,14 @@ See `experiments_manifest.json` for machine-readable paths.
 | `video_metadata.json` | IDs, topic, scenario paths, label sets |
 | `scenario_short.txt` | One-paragraph scenario for prompts/tables |
 | `scenario_full.txt` | Full scenario embedded in all prompts |
-| `prototypes_semantic.json` | 5× Explicit, 5× Vague, 5× Context-dependent |
-| `script_corpus.txt` | Placeholder RAG corpus (replace with transcript) |
-| `prompts/P1_unknown_reference_detection.txt` | Algorithm 1/2 routing |
+| `prototypes_semantic.json` | 5× Explicit, 5× Ambiguous, 5× Context-dependent |
+| `script_corpus.txt` | RAG corpus (transcript-derived chunks where available) |
+| `prompts/P1_unknown_reference_detection.txt` | Algorithm 1/4 routing |
 | `prompts/P2_rag_emotion_classification.txt` | RAG emotion (CAS-RAG context-dependent) |
 | `prompts/P3_no_rag_emotion_classification.txt` | Algorithms 1–2 no-RAG |
-| `prompts/P4_semantic_ambiguity_verification.txt` | Algorithms 1–2 vagueness branch |
-| `prompts/P5_semantic_similarity_explicit_vague.txt` | Algorithms 3–4 similarity |
-| `prompts/P6_semantic_ambiguity_aware_emotion.txt` | Vague branch + CAS-RAG |
+| `prompts/P4_semantic_ambiguity_verification.txt` | Algorithms 1–2 Ambiguous branch |
+| `prompts/P5_semantic_similarity_explicit_vague.txt` | Algorithms 3–4 two-way similarity (filename historical) |
+| `prompts/P6_semantic_ambiguity_aware_emotion.txt` | Ambiguous branch + CAS-RAG |
 | `prompts/P7_no_rag_emotion_without_vagueness_check.txt` | Explicit branch + CAS-RAG |
 
 ## Regenerate assets

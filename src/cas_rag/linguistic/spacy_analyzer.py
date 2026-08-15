@@ -42,12 +42,33 @@ class SpacyLinguisticAnalyzer:
                     return True
         return False
 
+    def cd_rag_policy(self, comment: str, scenario: str, script: str) -> str:
+        """CAS-RAG Layer 2 for Context-Dependent comments.
+
+        Returns ``resolvable`` (RAG), ``unnecessary`` (no RAG / P7), or
+        ``infeasible`` (video mismatch -> human verification). Retrieval fires
+        when spaCy flags underspecified references and the semantic fallback
+        score exceeds tau=0.4.
+        """
+        comment_lemmas = set(re.findall(r"[a-z]{4,}", comment.lower()))
+        corpus_lemmas = set(re.findall(r"[a-z]{4,}", (scenario + " " + script).lower()))
+        overlap = comment_lemmas & corpus_lemmas
+        temporal = bool(re.search(r"\b(when|that part|then|that moment)\b", comment, re.I))
+        if comment_lemmas and len(overlap) == 0 and not temporal:
+            return "infeasible"
+        needs = self.needs_rag(comment, scenario)
+        score = 0.2
+        if needs:
+            score = 0.75
+        if temporal:
+            score = max(score, 0.55)
+        tau = 0.4
+        if needs and score > tau and (len(overlap) >= 1 or temporal):
+            return "resolvable"
+        if needs and score > tau:
+            return "infeasible"
+        return "unnecessary"
+
     def can_ground_with_script(self, comment: str, scenario: str, script: str) -> bool:
-        """CAS-RAG context-dependent: resolvable using video script."""
-        if self.needs_rag(comment, scenario):
-            comment_lemmas = set(re.findall(r"[a-z]{3,}", comment.lower()))
-            script_lemmas = set(re.findall(r"[a-z]{3,}", (scenario + " " + script).lower()))
-            overlap = comment_lemmas & script_lemmas
-            temporal = bool(re.search(r"\b(when|that part|then)\b", comment, re.I))
-            return len(overlap) >= 2 or temporal
-        return True
+        """True when Layer 2 should retrieve (RAG-resolvable)."""
+        return self.cd_rag_policy(comment, scenario, script) == "resolvable"

@@ -18,13 +18,18 @@ def main():
     p.add_argument("--input", default=str(ROOT / "resources/datasets/sample/comments.csv"))
     p.add_argument("--compare-all", action="store_true")
     p.add_argument("--llm", default=None)
+    p.add_argument(
+        "--video-slug",
+        default="video_02_education_tutoring_diner",
+        help="Experiments-data folder (six-video package).",
+    )
     args = p.parse_args()
     runner = ExperimentRunner()
     if args.compare_all:
         out = runner.compare_all(Path(args.input))
         print(out)
     else:
-        out = runner.run(AlgorithmId(args.algorithm), Path(args.input), args.llm)
+        out = runner.run(AlgorithmId(args.algorithm), Path(args.input), args.llm, video_slug=args.video_slug)
         print(out)
 
 
