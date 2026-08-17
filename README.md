@@ -60,6 +60,23 @@ Thesis runs require `CAS_RAG_OFFLINE_MODE=0` (or unset) so embeddings use the tr
 
 Default: **`openai`** (`gpt-4o-mini`). Alternatives: `gemini`, `ollama`. Mock LLM is tests-only (`CAS_RAG_ALLOW_MOCK=1` / pytest).
 
+## RQ1 offline consensus audit
+
+Model 1 / RQ1 is an **offline** layer (does not change CAS-RAG runtime):
+
+```bash
+# 1. Dual-provider comparison export
+python scripts/run_five_algorithm_comparison.py --llms openai gemini --kpi \
+  --input <gold_workbook.xlsx> --video-slug video_02_education_tutoring_diner
+
+# 2. Consensus audit → Consensus_Audit + RQ1_Summary sheets
+python scripts/run_rq1_consensus_audit.py \
+  --input data/evaluation_outputs/<comparison>.xlsx \
+  --output Results/rq1_consensus_tutoring.xlsx --dataset tutoring
+```
+
+See `THESIS_REPRODUCIBILITY.md` for full table/figure traceability.
+
 ## Human verification
 
 Ambiguous P4/P6 outcomes and Context-Dependent **RAG-infeasible** (video mismatch) comments are queued in `data/human_verification_queue.json`.
