@@ -15,3 +15,5 @@ data/**/*.json
 .git-rewrite/
 data/human_verification_batch_run.json
 data/prompt_iteration_human_queue.json
+# Duplicate of Results/comments_bullying_Models_Run_results.xlsx — do not commit
+/comments_bullying_Models_Run_results.xlsx
