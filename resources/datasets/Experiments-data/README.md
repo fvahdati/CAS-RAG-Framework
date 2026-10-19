@@ -7,7 +7,7 @@ Pooled validation set: **600 comments** (100 per video), aligned with thesis Cha
 | Video | Folder slug | Evaluation label | YouTube ID | Labelled data (xlsx) |
 |-------|-------------|------------------|------------|----------------------|
 | 1 | `video_01_bullying_bystander_bus_stop` | Bullying | `Vo7kl9RsWBo` | `comments_bullying.xlsx` |
-| 2 | `video_02_education_tutoring_diner` | Education | `lqevHrpvAx8` | `comments_education.xlsx` |
+| 2 | `video_02_education_tutoring_diner` | Education | `lqevHrpvAx8` | `comments_education_tutoring_diner.xlsx` |
 | 3 | `video_03_mental_health_suicide_bridge` | Suicide | `Gwo_O0SFwak` | `comments_Suicide.xlsx` |
 | 4 | `video_04_teen_safety_predator_cafe` | TeenSafety | `YdqRLuYkYDk` | `comments-TeenSafety.xlsx` |
 | 5 | `video_05_teen_pregnancy_gabby_experiment` | TeenPregnancy | `8ddhPrll65Y` | `comments_teenPregnancy.xlsx` |

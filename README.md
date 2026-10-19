@@ -25,7 +25,7 @@ Layer 1 defaults: SentenceTransformer `all-MiniLM-L6-v2`, seven-metric weights i
 ## Architecture
 
 ```
-CAS_RAG_Project/
+./
 ├── api/                 # FastAPI REST backend
 ├── dashboard/           # Streamlit analytics dashboard
 ├── config/              # YAML configuration (margins, embeddings, top_k)
@@ -38,17 +38,19 @@ CAS_RAG_Project/
 
 Six video folders live under `resources/datasets/Experiments-data/video_01_...` through `video_06_...`. Each contains `scenario_full.txt`, `script_corpus.txt`, `prototypes_semantic.json`, and prompts P1--P7.
 
+## Evaluation data
+
+Gold-labelled comment workbooks for all six videos are in `resources/datasets/Experiments-data/`. The Tutoring and Bullying in-depth result workbooks are in the repository root and `Results/`. The prediction workbooks used for the pooled six-dataset routing and cost figures are not part of this public release. `comments.csv` is a six-row example, not an evaluation set. See `THESIS_REPRODUCIBILITY.md`.
+
 ## Quick start
 
+From the repository root:
+
 ```bash
-cd CAS_RAG_Project
 python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev,openai,dashboard,api]"
+pip install -e ".[dev,openai,gemini]"
 cp .env.example .env
 python -m spacy download en_core_web_sm
-python scripts/run_experiment.py --algorithm cas_rag \
-  --input resources/datasets/Experiments-data/comments.csv \
-  --video-slug video_02_education_tutoring_diner
 python scripts/run_five_algorithm_comparison.py \
   --input resources/datasets/Experiments-data/comments_education_tutoring_diner.xlsx \
   --video-slug video_02_education_tutoring_diner --kpi

@@ -1,65 +1,110 @@
-# Thesis Reproducibility Package
+# Thesis reproducibility notes
 
-This document maps every reported thesis table and figure to its source data, scripts, and reproduction steps. It supports examiner verification without changing reported numbers.
+This note maps the reported thesis tables to files in [CAS-RAG-Framework](https://github.com/fvahdati/CAS-RAG-Framework). It is a guide for examiners. The submitted PhD thesis is the authoritative source for reported results. Re-running the language-model APIs can change individual labels, so the archived workbooks below should be used when checking the published numbers.
 
-**Repository:** `CAS_RAG_Project`  
-**Thesis:** `Thesis_Template_UTS_PHD`  
-**Primary emotion evaluations:** Tutoring + Bullying only (`N=100` each)  
-**Routing / cost audit:** six datasets (`N=600` pooled)
+**Emotion evaluation:** Tutoring/Diner and Bullying/Bus Stop only (`N=100` each).  
+**Routing and cost audit:** six topic datasets (`N=600` pooled).
 
 ---
 
-## Quick start
+## Public release notes
+
+### Included
+
+- The CAS-RAG package, Algorithms 1–4, tests, and the offline RQ1 audit script.
+- Per-video scenarios, transcript corpora, prototypes, and prompts P1–P7 under `resources/datasets/Experiments-data/`.
+- Gold-labelled comment workbooks for all six videos (100 comments each). Each file contains the comment text and the gold routing label `expected_category`. In these files the third routing class is stored as `vague` (Ambiguous in the thesis) and context-dependent comments are stored as `context_dependent`.
+- The Tutoring post-refinement workbook and the Bullying five-pipeline workbook, including the model outputs used for those two in-depth tables.
+- `ETHICS.md` and `CITATION.cff`.
+
+### Intentionally excluded
+
+- The prediction workbooks that contain the CAS-RAG Layer-1 outputs used for the pooled six-dataset routing accuracies, confusion matrix, retrieval counts, and cost figures. Those workbooks are not part of the public release. The gold comment files in this repository do not, by themselves, reproduce those pooled figures: their model-output columns are empty.
+- Thesis figure PDFs (fig1–fig8) and the script that drew them.
+- The large background comment pool (152,594 comments) and the early 26-comment development pilot.
+- Stored RQ1 consensus workbooks. The audit script is included. The thesis does not treat a saved consensus spreadsheet as a reported result.
+- API keys. Copy `.env.example` to `.env` and supply keys locally.
+
+Reported numbers in the thesis remain the record of the study. This repository is the public code and data release that supports that record.
+
+---
+
+## Gold-labelled comment workbooks
+
+These files are in the repository. They are the annotated comment sets. They are not the pooled prediction archive.
+
+| Topic | File | Rows | Gold routing column |
+|-------|------|------|---------------------|
+| Bullying | `resources/datasets/Experiments-data/comments_bullying.xlsx` | 100 | `expected_category` |
+| Education (Tutoring/Diner) | `resources/datasets/Experiments-data/comments_education_tutoring_diner.xlsx` | 100 | `expected_category` |
+| Suicide | `resources/datasets/Experiments-data/comments_Suicide.xlsx` | 100 | `expected_category` |
+| TeenSafety | `resources/datasets/Experiments-data/comments-TeenSafety.xlsx` | 100 | `expected_category` |
+| TeenPregnancy | `resources/datasets/Experiments-data/comments_teenPregnancy.xlsx` | 100 | `expected_category` |
+| Teenagers-Drugs | `resources/datasets/Experiments-data/comments_teenagers drugs.xlsx` | 100 | `expected_category` |
+
+`resources/datasets/Experiments-data/comments.csv` is a six-row example for a smoke test. It is not one of the six annotated datasets.
+
+Each video folder (`video_01_` through `video_06_`) also contains `scenario_full.txt`, `script_corpus.txt`, `prototypes_semantic.json`, and prompts P1–P7.
+
+---
+
+## Traceability
+
+| Thesis item | What to open in this repository | How to check |
+|-------------|-------------------------------|--------------|
+| Tutoring post-refinement routing and emotion | `Result_after_Prompt_refinments.xlsx` | Gold routing: `Expected_category`. Gold emotion: `final label` (98 evaluable rows after excluding `?`). CAS-RAG routing 72.0% (28/100 mistakes). CAS-RAG emotion 77.6% (22/98 mistakes). Use the archived columns. Do not re-run the prompts to recreate the table. |
+| Tutoring pre-refinement emotion | Same workbook, pre-refinement emotion columns | Emotion denominator `n=97`. |
+| Tutoring improvement after prompt refinement | Same workbook | Difference between the pre- and post-refinement emotion counts. |
+| Bullying routing and emotion | `Results/comments_bullying_Models_Run_results.xlsx` | Gold routing: `Expected category` (100 rows). Gold emotion: `Emotion label` (88 rows; 12 blank). Strip a parenthetical suffix on gold before matching, for example `Frustration(Borderline Case)`. |
+| Bullying binary retrieval decision | Same Bullying workbook | Context-dependent versus not, on 100 rows. |
+| Tutoring versus Bullying synthesis | The two workbooks above | No separate file. |
+| Pooled Layer-1 accuracy, macro-F1, per-topic rates, cost, and retrieval audit | Thesis Chapter 6 | Gold comments are in the six workbooks above. The prediction workbooks used to score those 600 comments are not in the public release. Thesis figures: pooled accuracy 69.5% (417/600); cost without a gate `600×3=1800`; cost with the gate `199×3+401×1=998` (44.6% relative reduction); wrong retrieval 51/199. |
+| Chapter 6 figures fig1–fig8 | Submitted thesis | Drawn from the excluded prediction workbooks. Not shipped here. |
+| Chapter 5 seven-metric walkthrough | `src/cas_rag/semantic/similarity.py` and `config/default.yaml` | Weights and margins (`m=0.12`, `b=0.08`) match the thesis. Walkthrough comments are in Chapter 5. |
+| RQ1 offline consensus audit | `scripts/run_rq1_consensus_audit.py`, `src/cas_rag/evaluation/consensus.py` | The script is included. No consensus output workbook is archived here. Primary Tutoring and Bullying tables do not depend on that script. |
+
+---
+
+## In-depth workbooks that include model output
+
+| Evaluation | File | What it contains |
+|------------|------|------------------|
+| Tutoring, post-refinement | `Result_after_Prompt_refinments.xlsx` | Comment text, gold routing, gold emotion, and Algorithms 1–4 plus CAS-RAG. Prompts for this video are under `resources/datasets/Experiments-data/video_02_education_tutoring_diner/prompts/`. |
+| Bullying | `Results/comments_bullying_Models_Run_results.xlsx` | Comment text, gold routing, gold emotion, and the five-pipeline outputs used for the Bullying tables. The emotion columns are predominantly the OpenAI run. |
+
+These two files are the source for the in-depth emotion tables. They are separate from the excluded six-dataset prediction workbooks.
+
+---
+
+## Running the code
+
+From the repository root:
 
 ```bash
-cd CAS_RAG_Project
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev,openai,gemini]"
 python -m spacy download en_core_web_sm
-cp .env.example .env   # set OPENAI_API_KEY, optional GEMINI_API_KEY, CAS_RAG_OFFLINE_MODE=0
+cp .env.example .env   # set OPENAI_API_KEY; set GEMINI_API_KEY if running the dual-provider audit
 ```
 
----
+Set `CAS_RAG_OFFLINE_MODE=0` for a thesis-style run so embeddings are the trained encoder. Leave `CAS_RAG_ALLOW_MOCK` unset or `0`. The mock provider is for tests.
 
-## Traceability matrix
-
-| ID | Thesis location | Metric / content | Source workbook / data | Gold labels | Script / code | Reproduce |
-|----|-----------------|------------------|------------------------|-------------|---------------|-----------|
-| **tab:tutoring_100_post_refine** | Ch6 §Tutoring | Post-refinement routing + emotion (5 algos) | `Result_after_Prompt_refinments.xlsx` (repo root) — **canonical post-refinement source for table values**; routing columns unchanged from pre-refinement pass | `Expected_category`, `final label` (exclude `?` for emotion n=98) | Manual scoring contract aligned with Ch6 tables; five-pipeline outputs embedded in workbook | Open workbook; verify routing mistakes and emotion counts per algorithm. **Do not re-run prompts** if preserving approved numbers. |
-| **tab:tutoring_100_pre_refine** | Ch6 | Pre-refinement baseline | Same family as tutoring workbook; pre-refinement emotion columns | `final label` (n=97) | Same | Compare pre/post columns in archived workbook |
-| **tab:tutoring_100_improvement** | Ch6 | Emotion Δ after prompt refinement | Derived from pre vs post tables | Same | Derived | Subtract pre from post table values |
-| **tab:bullying_100_emotion** | Ch6 §Bullying | Three-way routing + emotion (n=88) | `Results/comments_bullying_Models_Run_results.xlsx` | `Expected category` (routing), `Emotion label` (emotion; 12 blank excluded) | Scoring: strip parenthetical suffixes on gold (e.g. `Frustration(Borderline Case)`); case-insensitive match | Open workbook; recompute routing/emotion per Ch6 contract |
-| **tab:bullying_100_binary** | Ch6 | Binary CD vs not + workbook emotion % | Same bullying workbook | Same | Binary: gold CD vs predicted CD | Count binary matches on 100 rows |
-| **tab:cross_dataset_comparison_framework** | Ch6 | Tutoring vs Bullying synthesis | Derived from above tables | Same | Derived | No separate source file |
-| **tab:casrag_cost** | Ch6 §eval_results | Pooled cost / RAG audit (600 comments) | Six-dataset gold exports (see **Missing artifacts**) + CAS-RAG Layer-1 predictions | Layer-1 `expected_category` per video | Manual cost model in Ch6 (`retrieval=1`, LLM+ctx=2`, LLM=1`) | Apply formula: `n_rag=199`, `cost_gate=998`, `cost_no_gate=1800`, saving 44.6% |
-| **Pooled Layer-1 accuracies** | Ch6, abstract, Ch7 | 69.5%, macro-F1 69.8%, per-topic % | Six-dataset CAS-RAG Layer-1 labels vs gold | Per-video xlsx in `VERY_IMPORTANT_RESULTS/` (**external to repo**) | `SemanticSimilarityEngine` or archived predictions | See **Missing artifacts** |
-| **fig1–fig8, fig6_dataset_overview** | Ch6 | Cost, confusion matrix, dashboard, by-topic | Generated from pooled six-dataset audit | Same as cost table | `generate_figures.py` (**external**; see below) | Regenerate when gold + predictions available |
-| **fig4_seven_metrics** | Ch5 | Seven-metric walkthrough | `figures/fig4_seven_metrics.png` (thesis); computed from `similarity.py` | Walkthrough comments in Ch5 | `src/cas_rag/semantic/similarity.py` | Run walkthrough examples in Ch5 |
-| **Ch4 pipeline diagrams** | Ch4 | Architecture | `figures/ch4/*.drawio.png` | N/A | Static assets | Visual only |
-| **sec:eval_rq1** | Ch6 | RQ1 consensus audit | Dual-provider comparison xlsx | Same gold emotion columns as above | `scripts/run_rq1_consensus_audit.py` | See **RQ1 audit** below |
-| **Appendix C summary table** | Appendix C | Numeric index | Compiled from Ch6 tables | Same | Derived | Cross-check against Ch6 |
-
----
-
-## RQ1 consensus audit (offline)
-
-**Purpose:** Operationalise Model 1 / RQ1 without changing CAS-RAG runtime or primary emotion tables.
-
-### Step 1 — Dual-provider comparison export (if not already present)
+A five-pipeline run on the Tutoring gold file:
 
 ```bash
 python scripts/run_five_algorithm_comparison.py \
-  --input <gold_labelled_input.xlsx> \
-  --output data/evaluation_outputs/<dataset>_comparison_openai_gemini.xlsx \
+  --input resources/datasets/Experiments-data/comments_education_tutoring_diner.xlsx \
   --video-slug video_02_education_tutoring_diner \
   --llms openai gemini --kpi
 ```
 
-For Bullying: `--video-slug video_01_bullying_bystander_bus_stop`.
+Bullying uses `--video-slug video_01_bullying_bystander_bus_stop` and `resources/datasets/Experiments-data/comments_bullying.xlsx`.
 
-**Note:** Existing `Results/comments_bullying_Models_Run_results.xlsx` contains primarily OpenAI (`ChatGpt`) columns. For full RQ1 audit, regenerate with `--llms openai gemini` or supply a workbook with both `*_emotion_label_ChatGpt` and `*_emotion_label_Gemini` columns.
+A fresh run writes under `data/evaluation_outputs/`. It is a new execution, not a replay of the frozen tables.
 
-### Step 2 — Run consensus audit
+### RQ1 audit
+
+The audit reads a comparison workbook that already has both OpenAI and Gemini emotion columns. It does not change CAS-RAG routing.
 
 ```bash
 python scripts/run_rq1_consensus_audit.py \
@@ -69,104 +114,12 @@ python scripts/run_rq1_consensus_audit.py \
   --algorithms CAS-RAG Alg1 Alg2 Alg3 Alg4
 ```
 
-**Outputs:**
-
-- `Consensus_Audit` — per-comment provider labels, consensus label, agreement ratio, reliability tier, disagreement flag, hallucination proxy
-- `RQ1_Summary` — dataset-level unanimous rate, disagreement rate, provider vs consensus accuracy
-
-**Code:**
-
-- `src/cas_rag/evaluation/consensus.py`
-- `src/cas_rag/experiments/consensus_audit.py`
+The Bullying workbook already in `Results/` is mainly an OpenAI export. A dual-provider file has to be produced with `--llms openai gemini` before the audit can score both providers. That output is not part of the public release.
 
 ---
 
-## Tutoring post-refinement reproduction
+## What an examiner should treat as the result
 
-| Item | Detail |
-|------|--------|
-| **Table** | `tab:tutoring_100_post_refine` |
-| **Canonical workbook in repo** | `Result_after_Prompt_refinments.xlsx` |
-| **Gold routing** | `Expected_category` |
-| **Gold emotion** | `final label` (98 evaluable after excluding `?`) |
-| **Reported CAS-RAG** | Routing 72.0% (28/100); emotion 77.6% (22/98) |
-| **Prompt refinement** | Documented in Ch6 §`sec:eval_prompt_refine`; prompts in `resources/datasets/Experiments-data/video_02_.../prompts/` |
-| **Important** | Table values are **approved frozen results**. Re-running LLM APIs may differ slightly; use archived workbook to verify reported numbers. |
-
----
-
-## Bullying reproduction
-
-| Item | Detail |
-|------|--------|
-| **Table** | `tab:bullying_100_emotion`, `tab:bullying_100_binary` |
-| **Workbook** | `Results/comments_bullying_Models_Run_results.xlsx` |
-| **Gold routing** | `Expected category` |
-| **Gold emotion** | `Emotion label` (88 evaluable; 12 blank) |
-| **Scoring contract** | Three-way routing on 100 rows; emotion with parenthetical normalisation on gold |
-
----
-
-## Six-dataset Layer-1 / cost reproduction
-
-| Item | Detail |
-|------|--------|
-| **Tables / figures** | `tab:casrag_cost`, fig1–fig3, fig5, fig7, fig8 |
-| **Gold data** | ~100 comments × 6 videos; filenames listed in `resources/datasets/Experiments-data/README.md` |
-| **Repo status** | Per-video **prompts, prototypes, scenarios** are in repo; **gold-labelled xlsx per video are not** in repo (referenced as `VERY_IMPORTANT_RESULTS/*.xlsx`) |
-| **Cost formula** | Ch6 §Metrics: without gate `600×3=1800`; with gate `199×3+401×1=998`; saving **44.6%**; wrong retrieval **51/199** |
-| **Action for submission** | Bundle `VERY_IMPORTANT_RESULTS/` (or equivalent) with thesis submission **or** document exact file hashes/paths used for the 600-comment audit |
-
----
-
-## Missing artifacts (examiner-facing)
-
-| Artifact | Referenced in | Status in repo | Recommendation |
-|----------|---------------|----------------|----------------|
-| `VERY_IMPORTANT_RESULTS/*.xlsx` | Ch6, Appendix A | **Missing** | Add to submission package (read-only) |
-| `generate_figures.py` | Ch6 index, Appendix A | **Missing** | Add script or archive PDF figures with generation notes |
-| `comparison_dataset.py` (26-comment pilot) | Ch6 | **Missing** | Archive pilot CSV/xlsx or remove script reference |
-| Tutoring dual-provider xlsx for RQ1 | Ch6 §RQ1 | **Partial** | Regenerate with `--llms openai gemini` |
-| Six per-video gold xlsx in `Experiments-data/` | README | **Missing** | Copy from `VERY_IMPORTANT_RESULTS` or document external path |
-| Thesis figure PDFs (`fig1`–`fig8`) | Ch6 | **Not in thesis repo tree** | Ensure figures ship with thesis PDF build |
-
----
-
-## Submission checklist
-
-- [ ] `CAS_RAG_Project` tagged commit includes `consensus.py`, `consensus_audit.py`, `run_rq1_consensus_audit.py`, tests
-- [ ] `Result_after_Prompt_refinments.xlsx` (Tutoring tables) in repo or submission bundle
-- [ ] `Results/comments_bullying_Models_Run_results.xlsx` (Bullying tables)
-- [ ] Six-dataset gold workbooks available to examiner (bundle or documented path)
-- [ ] `THESIS_REPRODUCIBILITY.md` (this file) in repo root
-- [ ] Thesis Ch6 §`sec:eval_rq1` describes offline audit scope
-- [ ] Ch1/Ch3 RQ1 and Model 1 wording aligned to offline audit (not in-pipeline ensemble)
-- [ ] Ch6 Model~1 naming collision fixed (linguistic-first **prototype**)
-- [ ] RQ1 audit outputs (`Results/rq1_consensus_*.xlsx`) generated for Tutoring + Bullying when dual-provider columns exist
-- [ ] `.env.example` documents `OPENAI_API_KEY`, `GEMINI_API_KEY`, `CAS_RAG_LLM_PROVIDER`
-- [ ] Thesis PDF compiles with updated Ch6 `\input{evaluation_rq1}`
-
----
-
-## RQ1 claim → implementation classification
-
-| Claim | Status |
-|-------|--------|
-| Multi-provider emotion comparison (OpenAI/Gemini) | **B — Partial** (`comparison_runner.py` + audit) |
-| Majority-vote consensus | **A — Implemented offline** (`consensus.py`) |
-| Agreement scoring | **A — Implemented offline** |
-| Disagreement detection | **A — Implemented offline** |
-| Reliability tiers (HIGH/SPLIT/etc.) | **A — Implemented offline** |
-| Gold-linked hallucination proxy | **B — Partial** (disagreement proxy, not full detector) |
-| In-pipeline filtering | **D — Future work** |
-| Weighted / confidence-weighted consensus | **D — Future work** |
-| Three-provider GPT-4+Gemini+LLaMA ensemble | **B — Partial** (OpenAI+Gemini; Ollama optional) |
-| Model 1 → CAS-RAG gating integration | **D — Conceptual** |
-
----
-
-## Contact points for examiners
-
-1. **Primary system evaluated:** CAS-RAG + Algorithms 1–4 (Ch6 Tutoring/Bullying tables).  
-2. **RQ1 evaluated separately:** Offline consensus audit (Ch6 §RQ1); does not change those tables.  
-3. **Frozen results:** Post-refinement tutoring and bullying numbers come from archived workbooks listed above.
+1. Tutoring and Bullying numbers come from the two workbooks named above.
+2. Pooled six-dataset routing and cost numbers are those printed in the thesis. The prediction files behind them are not in this public repository.
+3. The RQ1 code is an offline audit. It is not an in-pipeline ensemble, and it does not alter the Tutoring or Bullying tables.
