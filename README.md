@@ -40,7 +40,7 @@ Six video folders live under `resources/datasets/Experiments-data/video_01_...` 
 
 ## Evaluation data
 
-Gold-labelled comment workbooks for all six videos are in `resources/datasets/Experiments-data/`. The Tutoring and Bullying in-depth result workbooks are in the repository root and `Results/`. The prediction workbooks used for the pooled six-dataset routing and cost figures are not part of this public release. `comments.csv` is a six-row example, not an evaluation set. See `THESIS_REPRODUCIBILITY.md`.
+Gold-labelled comment workbooks for all six videos are in `resources/datasets/Experiments-data/`. The Tutoring and Bullying in-depth result workbooks are in the repository root and `Results/`. The six CAS-RAG Layer-1 prediction workbooks used for the pooled routing and cost figures are in `reproducibility/pooled_layer1/`. `comments.csv` is a six-row example, not an evaluation set. See `THESIS_REPRODUCIBILITY.md`.
 
 ## Quick start
 

@@ -15,12 +15,12 @@ This note maps the reported thesis tables to files in [CAS-RAG-Framework](https:
 - Per-video scenarios, transcript corpora, prototypes, and prompts P1–P7 under `resources/datasets/Experiments-data/`.
 - Gold-labelled comment workbooks for all six videos (100 comments each). Each file contains the comment text and the gold routing label `expected_category`. In these files the third routing class is stored as `vague` (Ambiguous in the thesis) and context-dependent comments are stored as `context_dependent`.
 - The Tutoring post-refinement workbook and the Bullying five-pipeline workbook, including the model outputs used for those two in-depth tables.
+- The six CAS-RAG Layer-1 prediction workbooks used for the pooled routing and cost audit, in `reproducibility/pooled_layer1/`. Score `expected_category` against `algorithm_category`. Count retrieval from `algorithm_rag_needed`.
 - `ETHICS.md` and `CITATION.cff`.
 
 ### Intentionally excluded
 
-- The prediction workbooks that contain the CAS-RAG Layer-1 outputs used for the pooled six-dataset routing accuracies, confusion matrix, retrieval counts, and cost figures. Those workbooks are not part of the public release. The gold comment files in this repository do not, by themselves, reproduce those pooled figures: their model-output columns are empty.
-- Thesis figure PDFs (fig1–fig8) and the script that drew them.
+- Thesis figure PDFs were drawn from those prediction workbooks. The figure files and the script that drew them are not in this release.
 - The large background comment pool (152,594 comments) and the early 26-comment development pilot.
 - Stored RQ1 consensus workbooks. The audit script is included. The thesis does not treat a saved consensus spreadsheet as a reported result.
 - API keys. Copy `.env.example` to `.env` and supply keys locally.
@@ -58,8 +58,8 @@ Each video folder (`video_01_` through `video_06_`) also contains `scenario_full
 | Bullying routing and emotion | `Results/comments_bullying_Models_Run_results.xlsx` | Gold routing: `Expected category` (100 rows). Gold emotion: `Emotion label` (88 rows; 12 blank). Strip a parenthetical suffix on gold before matching, for example `Frustration(Borderline Case)`. |
 | Bullying binary retrieval decision | Same Bullying workbook | Context-dependent versus not, on 100 rows. |
 | Tutoring versus Bullying synthesis | The two workbooks above | No separate file. |
-| Pooled Layer-1 accuracy, macro-F1, per-topic rates, cost, and retrieval audit | Thesis Chapter 6 | Gold comments are in the six workbooks above. The prediction workbooks used to score those 600 comments are not in the public release. Thesis figures: pooled accuracy 69.5% (417/600); cost without a gate `600×3=1800`; cost with the gate `199×3+401×1=998` (44.6% relative reduction); wrong retrieval 51/199. |
-| Chapter 6 figures fig1–fig8 | Submitted thesis | Drawn from the excluded prediction workbooks. Not shipped here. |
+| Pooled Layer-1 accuracy, macro-F1, per-topic rates, cost, and retrieval audit | `reproducibility/pooled_layer1/` | Six workbooks, 100 rows each. Compare `expected_category` with `algorithm_category` (`vague` is Ambiguous). Retrieval is `algorithm_rag_needed`. That flag matches a predicted `context_dependent` label on all 600 rows. `algorithm_rag_outcome` disagrees on 8 rows and is not the retrieval count. Pooled result: accuracy 69.5% (417/600); macro-F1 69.8%; weighted-F1 69.1%; cost `600×3=1800` to `199×3+401×1=998` (44.6%); wrong retrieval 51/199. |
+| Chapter 6 figures fig1–fig8 | Submitted thesis | Drawn from the workbooks in `reproducibility/pooled_layer1/`. The figure files are not shipped here. |
 | Chapter 5 seven-metric walkthrough | `src/cas_rag/semantic/similarity.py` and `config/default.yaml` | Weights and margins (`m=0.12`, `b=0.08`) match the thesis. Walkthrough comments are in Chapter 5. |
 | RQ1 offline consensus audit | `scripts/run_rq1_consensus_audit.py`, `src/cas_rag/evaluation/consensus.py` | The script is included. No consensus output workbook is archived here. Primary Tutoring and Bullying tables do not depend on that script. |
 
@@ -72,7 +72,7 @@ Each video folder (`video_01_` through `video_06_`) also contains `scenario_full
 | Tutoring, post-refinement | `Result_after_Prompt_refinments.xlsx` | Comment text, gold routing, gold emotion, and Algorithms 1–4 plus CAS-RAG. Prompts for this video are under `resources/datasets/Experiments-data/video_02_education_tutoring_diner/prompts/`. |
 | Bullying | `Results/comments_bullying_Models_Run_results.xlsx` | Comment text, gold routing, gold emotion, and the five-pipeline outputs used for the Bullying tables. The emotion columns are predominantly the OpenAI run. |
 
-These two files are the source for the in-depth emotion tables. They are separate from the excluded six-dataset prediction workbooks.
+These two files are the source for the in-depth emotion tables. They are separate from the six Layer-1 workbooks in `reproducibility/pooled_layer1/`.
 
 ---
 
@@ -121,5 +121,5 @@ The Bullying workbook already in `Results/` is mainly an OpenAI export. A dual-p
 ## What an examiner should treat as the result
 
 1. Tutoring and Bullying numbers come from the two workbooks named above.
-2. Pooled six-dataset routing and cost numbers are those printed in the thesis. The prediction files behind them are not in this public repository.
+2. Pooled six-dataset routing and cost numbers come from `reproducibility/pooled_layer1/`. Use `algorithm_rag_needed` for the retrieval count.
 3. The RQ1 code is an offline audit. It is not an in-pipeline ensemble, and it does not alter the Tutoring or Bullying tables.
