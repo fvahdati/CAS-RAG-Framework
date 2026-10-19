@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: CAS-RAG Framework
+message: "If you use this repository, please cite the associated PhD thesis."
+authors:
+  - family-names: Vahdati
+    given-names: Farahnaz
+repository-code: "https://github.com/fvahdati/CAS-RAG-Framework"
+license: MIT
+date-released: 2026-10-19
+``
