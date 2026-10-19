@@ -81,6 +81,9 @@ See `THESIS_REPRODUCIBILITY.md` for full table/figure traceability.
 
 Ambiguous P4/P6 outcomes and Context-Dependent **RAG-infeasible** (video mismatch) comments are queued in `data/human_verification_queue.json`.
 
+## Ethics
+Please see `ETHICS.md` for information about responsible use of the datasets and research materials.
+
 ## License
 
 Research / academic use — see LICENSE.
